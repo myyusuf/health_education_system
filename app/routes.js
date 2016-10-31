@@ -92,13 +92,7 @@ module.exports = function(app, passport, db) {
   //   });
   // });
 
-  app.get('/', function(req, res) {
-    res.render('workspace.handlebars', {
-      currentPageView: 'workspace',
-      user: req.user // get the user out of session and pass to template
-    });
-  });
-  app.get('/workspace', function(req, res) {
+  app.get('/', isLoggedIn, function(req, res) {
     res.render('workspace.handlebars', {
       currentPageView: 'workspace',
       user: req.user // get the user out of session and pass to template
