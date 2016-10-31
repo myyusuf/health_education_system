@@ -38,7 +38,7 @@ exports.listAll = function(req, res, db) {
   if(req.param('level')){
     var studentLevel = parseInt(req.param('level'));
 
-    var query = "SELECT * FROM tb_siswa WHERE tingkat = ? ";
+    var query = "SELECT * FROM tb_siswa WHERE tingkat = ? order by nama ";
 
     db.query(
       query, [studentLevel],
@@ -48,7 +48,7 @@ exports.listAll = function(req, res, db) {
       }
     );
   }else{
-    var query = "SELECT * FROM tb_siswa ";
+    var query = "SELECT * FROM tb_siswa order by nama ";
 
     db.query(
       query, [],
