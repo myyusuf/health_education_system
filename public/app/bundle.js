@@ -3893,6 +3893,10 @@
 
 	var _DataGrid2 = _interopRequireDefault(_DataGrid);
 
+	var _LevelComboBox = __webpack_require__(14);
+
+	var _LevelComboBox2 = _interopRequireDefault(_LevelComboBox);
+
 	var _AddStudentWindow = __webpack_require__(35);
 
 	var _AddStudentWindow2 = _interopRequireDefault(_AddStudentWindow);
@@ -3929,6 +3933,7 @@
 
 	      var onSearch = function onSearch(data) {
 	        data['searchTxt'] = searchTextBox.getValue();
+	        data['level'] = levelComboBox.getValue();
 	        return data;
 	      };
 
@@ -3963,6 +3968,7 @@
 	      });
 
 	      var searchTextBox = new _TextBox2.default({ placeHolder: 'Stambuk atau Nama', width: 250, height: 24 });
+	      var levelComboBox = new _LevelComboBox2.default({});
 	      var searchButton = new _Button2.default({
 	        imgSrc: '/ceu_assets/images/search.png',
 	        theme: 'metro',
@@ -4007,8 +4013,12 @@
 	      innerTd.appendTo(innerTr);
 	      searchTextBox.render(innerTd);
 
+	      innerTd = $('<td style="padding-top: 6px; width: 100px; height: 100%;"></td>');
+	      innerTd.appendTo(innerTr);
+	      levelComboBox.render(innerTd);
+
 	      innerTd = $('<td style="padding-top: 6px; height: 100%; "></td>');
-	      var _tempContainer = $('<div style="margin-left: -5px;"></div>');
+	      var _tempContainer = $('<div style="margin-left: 2px;"></div>');
 	      _tempContainer.appendTo(innerTd);
 	      innerTd.appendTo(innerTr);
 	      searchButton.render(_tempContainer);

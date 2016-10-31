@@ -1,22 +1,25 @@
 exports.list = function(req, res, db) {
 
-  var query = "SELECT * FROM tb_siswa WHERE stambuk_lama LIKE ? or stambuk_baru LIKE ? or nama LIKE ? order by nama LIMIT ?,? ";
+  var query = "SELECT * FROM tb_siswa WHERE (stambuk_lama LIKE ? or stambuk_baru LIKE ? or nama LIKE ?) and " +
+  "tingkat = ? order by nama LIMIT ?,? ";
   var pagesize = parseInt(req.param('pagesize'));
   var pagenum = parseInt(req.param('pagenum'));
   var stambukLamaLike = req.param('searchTxt') + '%';
   var stambukBaruLike = req.param('searchTxt') + '%';
   var namaLike = '%' + req.param('searchTxt') + '%';
+  var level = req.param('level');
 
   // console.log('stambukBaruLike: ' + stambukBaruLike);
 
   db.query(
-    query, [stambukLamaLike, stambukBaruLike, namaLike, pagenum * pagesize, pagesize],
+    query, [stambukLamaLike, stambukBaruLike, namaLike, level, pagenum * pagesize, pagesize],
     function(err, rows) {
       if (err) throw err;
 
-      var query = "SELECT count(1) as totalRecords FROM tb_siswa WHERE stambuk_lama LIKE ? or stambuk_baru LIKE ? or nama LIKE ? ";
+      var query = "SELECT count(1) as totalRecords FROM tb_siswa WHERE (stambuk_lama LIKE ? or stambuk_baru LIKE ? or nama LIKE ? ) and " +
+      "tingkat = ? ";
       db.query(
-        query, [stambukLamaLike, stambukBaruLike, namaLike],
+        query, [stambukLamaLike, stambukBaruLike, namaLike, level],
         function(err, rows2) {
           if (err) throw err;
 
