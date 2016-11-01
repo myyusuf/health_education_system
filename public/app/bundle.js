@@ -80,27 +80,27 @@
 
 	var _ScoreList2 = _interopRequireDefault(_ScoreList);
 
-	var _WeeklyScheduleList = __webpack_require__(47);
+	var _WeeklyScheduleList = __webpack_require__(34);
 
 	var _WeeklyScheduleList2 = _interopRequireDefault(_WeeklyScheduleList);
 
-	var _StudentList = __webpack_require__(34);
+	var _StudentList = __webpack_require__(35);
 
 	var _StudentList2 = _interopRequireDefault(_StudentList);
 
-	var _HospitalList = __webpack_require__(38);
+	var _HospitalList = __webpack_require__(39);
 
 	var _HospitalList2 = _interopRequireDefault(_HospitalList);
 
-	var _HospitalScheduleView = __webpack_require__(42);
+	var _HospitalScheduleView = __webpack_require__(43);
 
 	var _HospitalScheduleView2 = _interopRequireDefault(_HospitalScheduleView);
 
-	var _ClinicScheduleView = __webpack_require__(45);
+	var _ClinicScheduleView = __webpack_require__(46);
 
 	var _ClinicScheduleView2 = _interopRequireDefault(_ClinicScheduleView);
 
-	var _CostUnitReport = __webpack_require__(46);
+	var _CostUnitReport = __webpack_require__(47);
 
 	var _CostUnitReport2 = _interopRequireDefault(_CostUnitReport);
 
@@ -3697,13 +3697,13 @@
 	      placeHolder: 'Pilih Rumah Sakit',
 	      width: '100%',
 	      height: 25,
-	      theme: 'metro',
-	      selectionMode: 'dropDownList'
+	      theme: 'metro'
 	    };
 
 	    this.comboBox = new _ComboBox2.default({
 	      url: '/hospitals/hospitals_all',
 	      value: options.value,
+	      clearSelectionEnabled: true,
 	      comboBoxOptions: comboBoxOptions,
 	      onChange: function onChange(value) {
 	        //
@@ -3767,13 +3767,13 @@
 	      placeHolder: 'Pilih Puskesmas',
 	      width: '100%',
 	      height: 25,
-	      theme: 'metro',
-	      selectionMode: 'dropDownList'
+	      theme: 'metro'
 	    };
 
 	    this.comboBox = new _ComboBox2.default({
 	      url: '/hospitals/clinics_all',
 	      value: options.value,
+	      clearSelectionEnabled: true,
 	      comboBoxOptions: comboBoxOptions,
 	      onChange: function onChange(value) {
 	        //
@@ -3903,15 +3903,178 @@
 
 	var _DataGrid2 = _interopRequireDefault(_DataGrid);
 
+	var _DivisionComboBox = __webpack_require__(26);
+
+	var _DivisionComboBox2 = _interopRequireDefault(_DivisionComboBox);
+
+	var _EditScoreWindow = __webpack_require__(27);
+
+	var _EditScoreWindow2 = _interopRequireDefault(_EditScoreWindow);
+
+	var _DateRange = __webpack_require__(18);
+
+	var _DateRange2 = _interopRequireDefault(_DateRange);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var WeeklyScheduleList = function () {
+	  function WeeklyScheduleList() {
+	    _classCallCheck(this, WeeklyScheduleList);
+
+	    this.id = (0, _Utils.guid)();
+	  }
+
+	  _createClass(WeeklyScheduleList, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+
+	      var url = "/weeklyschedules";
+
+	      var source = {
+	        datatype: "json",
+	        datafields: [{ name: 'id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'nama_bagian', type: 'string' }, { name: 'start_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'end_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }],
+	        id: "id",
+	        url: url
+	      };
+
+	      var dateRange = new _DateRange2.default({});
+
+	      var onSearch = function onSearch(data) {
+	        data['searchTxt'] = searchTextBox.getValue();
+	        data['searchDivision'] = divisionComboBox.getValue();
+	        data['searchDate'] = dateRange.getValue();
+	        return data;
+	      };
+
+	      var dataGridOptions = {
+	        width: '100%',
+	        height: '100%',
+	        pageable: true,
+	        groupable: true,
+	        virtualmode: true,
+	        rendergridrows: function rendergridrows(params) {
+	          return params.data;
+	        },
+	        altrows: true,
+	        theme: 'metro',
+	        columns: [{ text: 'Stambuk Lama', datafield: 'stambuk_lama', width: '15%' }, { text: 'Stambuk Baru', datafield: 'stambuk_baru', width: '15%' }, { text: 'Nama', datafield: 'nama', width: '25%' }, { text: 'Bagian', datafield: 'nama_bagian', width: '15%' }, { text: 'Tanggal Mulai', datafield: 'start_date', cellsformat: 'dd-MM-yyyy', width: '15%' }, { text: 'Tanggal Selesai', datafield: 'end_date', cellsformat: 'dd-MM-yyyy', width: '15%' }],
+	        groups: []
+	      };
+
+	      this.dataGrid = new _DataGrid2.default({
+	        source: source,
+	        onSearch: onSearch,
+	        onRowDoubleClick: function onRowDoubleClick(data) {
+	          var editScoreWindow = new _EditScoreWindow2.default({
+	            data: data,
+	            onSaveSuccess: function onSaveSuccess() {
+	              _this.dataGrid.refresh();
+	            }
+	          });
+	          editScoreWindow.render($('#dialogWindowContainer'));
+	          editScoreWindow.open();
+	        },
+	        dataGridOptions: dataGridOptions
+	      });
+
+	      var divisionComboBox = new _DivisionComboBox2.default();
+	      var searchTextBox = new _TextBox2.default({ placeHolder: 'Stambuk atau Nama', width: 250, height: 24 });
+	      var searchButton = new _Button2.default({
+	        imgSrc: '/ceu_assets/images/search.png',
+	        theme: 'metro',
+	        width: 30,
+	        height: 26,
+	        onClick: function onClick() {
+	          _this.dataGrid.refresh();
+	        }
+	      });
+
+	      var table = $('<table style="height: 100%; width: 100%; margin: -3px; "></table>');
+	      var tr = $('<tr></tr>');
+	      var td = $('<td style="padding: 0; height: 40px;"></td>');
+	      table.appendTo(container);
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      var innerTable = $('<table style="height: 100%; width: 100%;"></table>');
+	      var innerTr = $('<tr></tr>');
+	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
+	      innerTable.appendTo(td);
+	      innerTr.appendTo(innerTable);
+	      innerTd.appendTo(innerTr);
+	      dateRange.render(innerTd);
+
+	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
+	      innerTd.appendTo(innerTr);
+	      divisionComboBox.render(innerTd);
+
+	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
+	      innerTd.appendTo(innerTr);
+	      searchTextBox.render(innerTd);
+
+	      innerTd = $('<td style="padding-top: 6px; height: 100%;"></td>');
+	      var _tempContainer = $('<div style="margin-left: -5px;"></div>');
+	      _tempContainer.appendTo(innerTd);
+	      innerTd.appendTo(innerTr);
+	      searchButton.render(_tempContainer);
+
+	      tr = $('<tr></tr>');
+	      td = $('<td style="padding: 0;"></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      this.dataGrid.render(td);
+	    }
+	  }]);
+
+	  return WeeklyScheduleList;
+	}();
+
+	exports.default = WeeklyScheduleList;
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _ToggleButton = __webpack_require__(10);
+
+	var _ToggleButton2 = _interopRequireDefault(_ToggleButton);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	var _DataGrid = __webpack_require__(25);
+
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+
 	var _LevelComboBox = __webpack_require__(14);
 
 	var _LevelComboBox2 = _interopRequireDefault(_LevelComboBox);
 
-	var _AddStudentWindow = __webpack_require__(35);
+	var _AddStudentWindow = __webpack_require__(36);
 
 	var _AddStudentWindow2 = _interopRequireDefault(_AddStudentWindow);
 
-	var _EditStudentWindow = __webpack_require__(36);
+	var _EditStudentWindow = __webpack_require__(37);
 
 	var _EditStudentWindow2 = _interopRequireDefault(_EditStudentWindow);
 
@@ -4048,7 +4211,7 @@
 	exports.default = StudentList;
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4196,7 +4359,7 @@
 	exports.default = AddStudentWindow;
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4217,7 +4380,7 @@
 
 	var _Form2 = _interopRequireDefault(_Form);
 
-	var _EditWindow = __webpack_require__(37);
+	var _EditWindow = __webpack_require__(38);
 
 	var _EditWindow2 = _interopRequireDefault(_EditWindow);
 
@@ -4363,7 +4526,7 @@
 	exports.default = EditStudentWindow;
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4537,7 +4700,7 @@
 	exports.default = EditWindow;
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4566,11 +4729,11 @@
 
 	var _DataGrid2 = _interopRequireDefault(_DataGrid);
 
-	var _AddHospitalWindow = __webpack_require__(39);
+	var _AddHospitalWindow = __webpack_require__(40);
 
 	var _AddHospitalWindow2 = _interopRequireDefault(_AddHospitalWindow);
 
-	var _EditHospitalWindow = __webpack_require__(41);
+	var _EditHospitalWindow = __webpack_require__(42);
 
 	var _EditHospitalWindow2 = _interopRequireDefault(_EditHospitalWindow);
 
@@ -4710,7 +4873,7 @@
 	exports.default = HospitalList;
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4743,7 +4906,7 @@
 
 	var _Label2 = _interopRequireDefault(_Label);
 
-	var _HospitalTypeComboBox = __webpack_require__(40);
+	var _HospitalTypeComboBox = __webpack_require__(41);
 
 	var _HospitalTypeComboBox2 = _interopRequireDefault(_HospitalTypeComboBox);
 
@@ -4849,7 +5012,7 @@
 	exports.default = AddHospitalWindow;
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4924,7 +5087,7 @@
 	exports.default = HospitalTypeComboBox;
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4945,7 +5108,7 @@
 
 	var _Form2 = _interopRequireDefault(_Form);
 
-	var _EditWindow = __webpack_require__(37);
+	var _EditWindow = __webpack_require__(38);
 
 	var _EditWindow2 = _interopRequireDefault(_EditWindow);
 
@@ -4957,7 +5120,7 @@
 
 	var _Label2 = _interopRequireDefault(_Label);
 
-	var _HospitalTypeComboBox = __webpack_require__(40);
+	var _HospitalTypeComboBox = __webpack_require__(41);
 
 	var _HospitalTypeComboBox2 = _interopRequireDefault(_HospitalTypeComboBox);
 
@@ -5082,7 +5245,7 @@
 	exports.default = EditHospitalWindow;
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5103,7 +5266,7 @@
 
 	var _TextBox2 = _interopRequireDefault(_TextBox);
 
-	var _Docking = __webpack_require__(43);
+	var _Docking = __webpack_require__(44);
 
 	var _Docking2 = _interopRequireDefault(_Docking);
 
@@ -5119,7 +5282,7 @@
 
 	var _DateRange2 = _interopRequireDefault(_DateRange);
 
-	var _HospitalDockingGrid = __webpack_require__(44);
+	var _HospitalDockingGrid = __webpack_require__(45);
 
 	var _HospitalDockingGrid2 = _interopRequireDefault(_HospitalDockingGrid);
 
@@ -5238,7 +5401,7 @@
 	exports.default = HospitalScheduleView;
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5315,7 +5478,7 @@
 	exports.default = Docking;
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5344,11 +5507,11 @@
 
 	var _DataGrid2 = _interopRequireDefault(_DataGrid);
 
-	var _AddStudentWindow = __webpack_require__(35);
+	var _AddStudentWindow = __webpack_require__(36);
 
 	var _AddStudentWindow2 = _interopRequireDefault(_AddStudentWindow);
 
-	var _EditStudentWindow = __webpack_require__(36);
+	var _EditStudentWindow = __webpack_require__(37);
 
 	var _EditStudentWindow2 = _interopRequireDefault(_EditStudentWindow);
 
@@ -5425,7 +5588,7 @@
 	exports.default = HospitalDockingGrid;
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5446,7 +5609,7 @@
 
 	var _TextBox2 = _interopRequireDefault(_TextBox);
 
-	var _Docking = __webpack_require__(43);
+	var _Docking = __webpack_require__(44);
 
 	var _Docking2 = _interopRequireDefault(_Docking);
 
@@ -5462,7 +5625,7 @@
 
 	var _DateRange2 = _interopRequireDefault(_DateRange);
 
-	var _HospitalDockingGrid = __webpack_require__(44);
+	var _HospitalDockingGrid = __webpack_require__(45);
 
 	var _HospitalDockingGrid2 = _interopRequireDefault(_HospitalDockingGrid);
 
@@ -5581,7 +5744,7 @@
 	exports.default = ClinicScheduleView;
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5725,169 +5888,6 @@
 	}();
 
 	exports.default = CostUnitReport;
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Utils = __webpack_require__(3);
-
-	var _Button = __webpack_require__(8);
-
-	var _Button2 = _interopRequireDefault(_Button);
-
-	var _ToggleButton = __webpack_require__(10);
-
-	var _ToggleButton2 = _interopRequireDefault(_ToggleButton);
-
-	var _TextBox = __webpack_require__(11);
-
-	var _TextBox2 = _interopRequireDefault(_TextBox);
-
-	var _DataGrid = __webpack_require__(25);
-
-	var _DataGrid2 = _interopRequireDefault(_DataGrid);
-
-	var _DivisionComboBox = __webpack_require__(26);
-
-	var _DivisionComboBox2 = _interopRequireDefault(_DivisionComboBox);
-
-	var _EditScoreWindow = __webpack_require__(27);
-
-	var _EditScoreWindow2 = _interopRequireDefault(_EditScoreWindow);
-
-	var _DateRange = __webpack_require__(18);
-
-	var _DateRange2 = _interopRequireDefault(_DateRange);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var WeeklyScheduleList = function () {
-	  function WeeklyScheduleList() {
-	    _classCallCheck(this, WeeklyScheduleList);
-
-	    this.id = (0, _Utils.guid)();
-	  }
-
-	  _createClass(WeeklyScheduleList, [{
-	    key: 'render',
-	    value: function render(container) {
-
-	      var _this = this;
-
-	      var url = "/weeklyschedules";
-
-	      var source = {
-	        datatype: "json",
-	        datafields: [{ name: 'id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'nama_bagian', type: 'string' }, { name: 'start_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'end_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }],
-	        id: "id",
-	        url: url
-	      };
-
-	      var dateRange = new _DateRange2.default({});
-
-	      var onSearch = function onSearch(data) {
-	        data['searchTxt'] = searchTextBox.getValue();
-	        data['searchDivision'] = divisionComboBox.getValue();
-	        data['searchDate'] = dateRange.getValue();
-	        return data;
-	      };
-
-	      var dataGridOptions = {
-	        width: '100%',
-	        height: '100%',
-	        pageable: true,
-	        groupable: true,
-	        virtualmode: true,
-	        rendergridrows: function rendergridrows(params) {
-	          return params.data;
-	        },
-	        altrows: true,
-	        theme: 'metro',
-	        columns: [{ text: 'Stambuk Lama', datafield: 'stambuk_lama', width: '15%' }, { text: 'Stambuk Baru', datafield: 'stambuk_baru', width: '15%' }, { text: 'Nama', datafield: 'nama', width: '25%' }, { text: 'Bagian', datafield: 'nama_bagian', width: '15%' }, { text: 'Tanggal Mulai', datafield: 'start_date', cellsformat: 'dd-MM-yyyy', width: '15%' }, { text: 'Tanggal Selesai', datafield: 'end_date', cellsformat: 'dd-MM-yyyy', width: '15%' }],
-	        groups: []
-	      };
-
-	      this.dataGrid = new _DataGrid2.default({
-	        source: source,
-	        onSearch: onSearch,
-	        onRowDoubleClick: function onRowDoubleClick(data) {
-	          var editScoreWindow = new _EditScoreWindow2.default({
-	            data: data,
-	            onSaveSuccess: function onSaveSuccess() {
-	              _this.dataGrid.refresh();
-	            }
-	          });
-	          editScoreWindow.render($('#dialogWindowContainer'));
-	          editScoreWindow.open();
-	        },
-	        dataGridOptions: dataGridOptions
-	      });
-
-	      var divisionComboBox = new _DivisionComboBox2.default();
-	      var searchTextBox = new _TextBox2.default({ placeHolder: 'Stambuk atau Nama', width: 250, height: 24 });
-	      var searchButton = new _Button2.default({
-	        imgSrc: '/ceu_assets/images/search.png',
-	        theme: 'metro',
-	        width: 30,
-	        height: 26,
-	        onClick: function onClick() {
-	          _this.dataGrid.refresh();
-	        }
-	      });
-
-	      var table = $('<table style="height: 100%; width: 100%; margin: -3px; "></table>');
-	      var tr = $('<tr></tr>');
-	      var td = $('<td style="padding: 0; height: 40px;"></td>');
-	      table.appendTo(container);
-	      tr.appendTo(table);
-	      td.appendTo(tr);
-
-	      var innerTable = $('<table style="height: 100%; width: 100%;"></table>');
-	      var innerTr = $('<tr></tr>');
-	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
-	      innerTable.appendTo(td);
-	      innerTr.appendTo(innerTable);
-	      innerTd.appendTo(innerTr);
-	      dateRange.render(innerTd);
-
-	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
-	      innerTd.appendTo(innerTr);
-	      divisionComboBox.render(innerTd);
-
-	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
-	      innerTd.appendTo(innerTr);
-	      searchTextBox.render(innerTd);
-
-	      innerTd = $('<td style="padding-top: 6px; height: 100%;"></td>');
-	      var _tempContainer = $('<div style="margin-left: -5px;"></div>');
-	      _tempContainer.appendTo(innerTd);
-	      innerTd.appendTo(innerTr);
-	      searchButton.render(_tempContainer);
-
-	      tr = $('<tr></tr>');
-	      td = $('<td style="padding: 0;"></td>');
-	      tr.appendTo(table);
-	      td.appendTo(tr);
-
-	      this.dataGrid.render(td);
-	    }
-	  }]);
-
-	  return WeeklyScheduleList;
-	}();
-
-	exports.default = WeeklyScheduleList;
 
 /***/ }
 /******/ ]);
