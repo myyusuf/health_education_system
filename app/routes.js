@@ -8,6 +8,7 @@
 var scheduleData = require('./handlers/schedule_data.js');
 var studentData = require('./handlers/student_data.js');
 var scoreData = require('./handlers/score_data.js');
+var weeklyScheduleData = require('./handlers/weekly_schedule_data.js');
 var divisionData = require('./handlers/division_data.js');
 var hospitalData = require('./handlers/hospital_data.js');
 var reportingData = require('./handlers/reporting_data.js');
@@ -219,6 +220,10 @@ module.exports = function(app, passport, db) {
 
   app.get('/reporting/costunit', function(req, res) {
     reportingData.costUnit(req, res, db);
+  });
+
+  app.get('/weeklyschedules', function(req, res) {
+    weeklyScheduleData.list(req, res, db);
   });
 };
 

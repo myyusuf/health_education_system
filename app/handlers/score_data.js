@@ -30,14 +30,14 @@ exports.list = function(req, res, db) {
   "LEFT JOIN tb_rumah_sakit puskesmas ON tb_nilai.puskesmas_id = puskesmas.id " +
   "LEFT JOIN tb_rekomendasi ON tb_nilai.rekomendasi_id = tb_rekomendasi.id " +
   "RIGHT JOIN tb_jadwal ON (tb_nilai.id = tb_jadwal.nilai_id AND tb_jadwal.tipe_jadwal = 'BA') " +
-  "WHERE (tb_siswa.stambuk_lama LIKE ? OR tb_siswa.stambuk_baru LIKE ? OR tb_siswa.nama LIKE ?) " +
-  "order by tb_siswa.nama ";
+  "WHERE (tb_siswa.stambuk_lama LIKE ? OR tb_siswa.stambuk_baru LIKE ? OR tb_siswa.nama LIKE ?) ";
 
   if(division){
     query += "AND tb_nilai.bagian_id = ? "
     queryArgs = [stambukLamaLike, stambukBaruLike, namaLike, divisionId, pagenum * pagesize, pagesize];
   }
 
+  query += "order by tb_siswa.nama ";
   query += "LIMIT ?,? ";
 
   db.query(
