@@ -5447,7 +5447,7 @@
 	          innerDockingContainer.appendTo(dockingContainer);
 	        }
 
-	        var portletContainer = $('<div id="window1" style="height: 220px; padding: 0;"></div>');
+	        var portletContainer = $('<div style="height: 500px; padding: 0;"></div>');
 	        portletContainer.appendTo(innerDockingContainer);
 	        var portletTitle = $('<div>' + this.items[i].title + '</div>');
 	        portletTitle.css('font-weight', 'bold');
