@@ -3969,14 +3969,14 @@
 	        source: source,
 	        onSearch: onSearch,
 	        onRowDoubleClick: function onRowDoubleClick(data) {
-	          var editScoreWindow = new _EditScoreWindow2.default({
-	            data: data,
-	            onSaveSuccess: function onSaveSuccess() {
-	              _this.dataGrid.refresh();
-	            }
-	          });
-	          editScoreWindow.render($('#dialogWindowContainer'));
-	          editScoreWindow.open();
+	          // var editScoreWindow = new EditScoreWindow({
+	          //   data: data,
+	          //   onSaveSuccess: function(){
+	          //     _this.dataGrid.refresh();
+	          //   }
+	          // });
+	          // editScoreWindow.render($('#dialogWindowContainer'));
+	          // editScoreWindow.open();
 	        },
 	        dataGridOptions: dataGridOptions
 	      });
