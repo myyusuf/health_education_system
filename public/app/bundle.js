@@ -871,7 +871,7 @@
 	        if (data[i].tipe_jadwal == 'PR') {
 	          this.ganttChartData.data.push({
 	            "id": data[i].id,
-	            "text": data[i].nama,
+	            "text": data[i].nama + " : " + data[i].stambuk_lama + " - " + data[i].stambuk_baru,
 	            "type": "project",
 	            "start_date": "",
 	            "duration": "",
@@ -1439,7 +1439,6 @@
 
 	    var studentComboBox = new _StudentComboBox2.default({ studentLevel: 1 });
 	    var dateRange1 = new _DateRange2.default({
-	      value: { startDate: null, endDate: null },
 	      width: '100%',
 	      height: 25
 	    });
@@ -1528,7 +1527,7 @@
 	    var form = new _Form2.default(formOptions);
 
 	    this.window = new _AddWindow2.default({
-	      width: 330,
+	      width: 430,
 	      height: 360,
 	      title: 'Tambah Siswa Tingkat 1',
 	      content: form,
@@ -1977,7 +1976,7 @@
 	    var studentLevel = options.studentLevel;
 
 	    var comboBoxOptions = {
-	      displayMember: "nama",
+	      displayMember: "nama_dan_stambuk",
 	      valueMember: "id",
 	      placeHolder: 'Pilih Siswa',
 	      width: '100%',
@@ -2173,7 +2172,7 @@
 	    var form = new _Form2.default(formOptions);
 
 	    this.window = new _AddWindow2.default({
-	      width: 330,
+	      width: 430,
 	      height: 430,
 	      title: 'Tambah Siswa Tingkat 2',
 	      content: form,
@@ -2420,7 +2419,7 @@
 	    var form = new _Form2.default(formOptions);
 
 	    this.window = new _AddWindow2.default({
-	      width: 330,
+	      width: 430,
 	      height: 360,
 	      title: 'Edit Siswa Tingkat 1',
 	      content: form,
@@ -2696,7 +2695,7 @@
 	    var form = new _Form2.default(formOptions);
 
 	    this.window = new _AddWindow2.default({
-	      width: 330,
+	      width: 430,
 	      height: 430,
 	      title: 'Edit Siswa Tingkat 2',
 	      content: form,

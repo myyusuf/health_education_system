@@ -17,7 +17,7 @@ exports.list = function(req, res, db) {
   var stambukBaruLike = req.param('searchTxt') + '%';
   var namaLike = '%' + req.param('searchTxt') + '%';
 
-  var query = "SELECT tb_jadwal.*, tb_siswa.nama, tb_bagian.nama as nama_bagian "+
+  var query = "SELECT tb_jadwal.*, tb_siswa.stambuk_lama, tb_siswa.stambuk_baru, tb_siswa.nama, tb_bagian.nama as nama_bagian "+
   "FROM tb_jadwal " +
   "left join tb_siswa on tb_jadwal.siswa_id=tb_siswa.id " +
   "left join tb_bagian on tb_jadwal.bagian_id=tb_bagian.id " +
