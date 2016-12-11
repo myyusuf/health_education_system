@@ -117,6 +117,7 @@ exports.update = function(req, res, db) {
   var post_test = req.body.post_test == '' ? 0.0 : req.body.post_test;
   var nilai_akhir = req.body.nilai_akhir == '' ? 0.0 : req.body.nilai_akhir;
   var seminar = req.body.seminar == '' ? 0.0 : req.body.seminar;
+  var portofolio = req.body.portofolio == '' ? 0.0 : req.body.portofolio;
 
   var updateScore = function(callback){
     db.query(
@@ -129,7 +130,8 @@ exports.update = function(req, res, db) {
     'ujian = ?, ' +
     'post_test = ?, ' +
     'nilai_akhir = ?, ' +
-    'seminar = ? ' +
+    'seminar = ?, ' +
+    'portofolio = ? ' +
     'WHERE id = ?',
     [
       rs_id,
@@ -142,6 +144,7 @@ exports.update = function(req, res, db) {
       post_test,
       nilai_akhir,
       seminar,
+      portofolio,
       id
     ],
     function (err, result) {

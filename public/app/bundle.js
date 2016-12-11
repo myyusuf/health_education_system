@@ -2918,7 +2918,7 @@
 
 	      var source = {
 	        datatype: "json",
-	        datafields: [{ name: 'id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'nama_bagian', type: 'string' }, { name: 'start_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'end_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'rumah_sakit_id', type: 'int' }, { name: 'rumah_sakit_nama', type: 'string' }, { name: 'puskesmas_id', type: 'int' }, { name: 'puskesmas_nama', type: 'string' }, { name: 'pre_test', type: 'float' }, { name: 'tugas_ilmiah', type: 'float' }, { name: 'persentase10', type: 'float' }, { name: 'persentase20', type: 'float' }, { name: 'persentase35', type: 'float' }, { name: 'persentase35b', type: 'float' }, { name: 'diskusi_mingguan', type: 'float' }, { name: 'ujian', type: 'float' }, { name: 'post_test', type: 'float' }, { name: 'nilai_akhir', type: 'float' }, { name: 'seminar', type: 'float' }, { name: 'rekomendasi_id', type: 'int' }, { name: 'rekomendasi_nama', type: 'string' }],
+	        datafields: [{ name: 'id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'nama_bagian', type: 'string' }, { name: 'start_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'end_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'rumah_sakit_id', type: 'int' }, { name: 'rumah_sakit_nama', type: 'string' }, { name: 'puskesmas_id', type: 'int' }, { name: 'puskesmas_nama', type: 'string' }, { name: 'pre_test', type: 'float' }, { name: 'tugas_ilmiah', type: 'float' }, { name: 'persentase10', type: 'float' }, { name: 'persentase20', type: 'float' }, { name: 'persentase35', type: 'float' }, { name: 'persentase35b', type: 'float' }, { name: 'diskusi_mingguan', type: 'float' }, { name: 'ujian', type: 'float' }, { name: 'post_test', type: 'float' }, { name: 'nilai_akhir', type: 'float' }, { name: 'seminar', type: 'float' }, { name: 'portofolio', type: 'float' }, { name: 'rekomendasi_id', type: 'int' }, { name: 'rekomendasi_nama', type: 'string' }],
 	        id: "id",
 	        url: url
 	      };
@@ -2940,7 +2940,7 @@
 	        },
 	        altrows: true,
 	        theme: 'metro',
-	        columns: [{ text: 'Stambuk Lama', datafield: 'stambuk_lama', width: 100 }, { text: 'Stambuk Baru', datafield: 'stambuk_baru', width: 100 }, { text: 'Nama', datafield: 'nama', width: 200 }, { text: 'Bagian', datafield: 'nama_bagian', width: 110 }, { text: 'Tanggal Mulai', datafield: 'start_date', cellsformat: 'dd-MM-yyyy', width: 100 }, { text: 'Tanggal Selesai', datafield: 'end_date', cellsformat: 'dd-MM-yyyy', width: 100 }, { text: 'Rumah Sakit', datafield: 'rumah_sakit_nama', width: 110 }, { text: 'Puskesmas', datafield: 'puskesmas_nama', width: 110 }, { text: 'Pre-Test', datafield: 'pre_test', cellsalign: 'right', cellsformat: 'd2', width: 60 }, { text: 'Tugas Ilmiah', datafield: 'tugas_ilmiah', cellsalign: 'right', cellsformat: 'd2', width: 80 }, { text: '10%', datafield: 'persentase10', cellsalign: 'right', cellsformat: 'd2', width: 50 }, { text: 'Diskusi Mingguan', datafield: 'diskusi_mingguan', cellsalign: 'right', cellsformat: 'd2', width: 110 }, { text: '20%', datafield: 'persentase20', cellsalign: 'right', cellsformat: 'd2', width: 50 }, { text: 'Nilai Ujian', datafield: 'ujian', cellsalign: 'right', cellsformat: 'd2', width: 70 }, { text: '35%', datafield: 'persentase35', cellsalign: 'right', cellsformat: 'd2', width: 50 }, { text: 'Post Test (CBT)', datafield: 'post_test', cellsalign: 'right', cellsformat: 'd2', width: 100 }, { text: '35%', datafield: 'persentase35b', cellsalign: 'right', cellsformat: 'd2', width: 50 }, { text: 'Nilai Akhir', datafield: 'nilai_akhir', cellsalign: 'right', cellsformat: 'd2', width: 70 }, { text: 'Seminar', datafield: 'seminar', cellsalign: 'right', cellsformat: 'd2', width: 60 }, { text: 'Rekomendasi', datafield: 'rekomendasi_nama', width: 200 }],
+	        columns: [{ text: 'Stambuk Lama', datafield: 'stambuk_lama', width: 100 }, { text: 'Stambuk Baru', datafield: 'stambuk_baru', width: 100 }, { text: 'Nama', datafield: 'nama', width: 200 }, { text: 'Bagian', datafield: 'nama_bagian', width: 110 }, { text: 'Tanggal Mulai', datafield: 'start_date', cellsformat: 'dd-MM-yyyy', width: 100 }, { text: 'Tanggal Selesai', datafield: 'end_date', cellsformat: 'dd-MM-yyyy', width: 100 }, { text: 'Rumah Sakit', datafield: 'rumah_sakit_nama', width: 110 }, { text: 'Puskesmas', datafield: 'puskesmas_nama', width: 110 }, { text: 'Pre-Test', datafield: 'pre_test', cellsalign: 'right', cellsformat: 'd2', width: 60 }, { text: 'Tugas Ilmiah', datafield: 'tugas_ilmiah', cellsalign: 'right', cellsformat: 'd2', width: 80 }, { text: '10%', datafield: 'persentase10', cellsalign: 'right', cellsformat: 'd2', width: 50 }, { text: 'Diskusi Mingguan', datafield: 'diskusi_mingguan', cellsalign: 'right', cellsformat: 'd2', width: 110 }, { text: '20%', datafield: 'persentase20', cellsalign: 'right', cellsformat: 'd2', width: 50 }, { text: 'Nilai Ujian', datafield: 'ujian', cellsalign: 'right', cellsformat: 'd2', width: 70 }, { text: '35%', datafield: 'persentase35', cellsalign: 'right', cellsformat: 'd2', width: 50 }, { text: 'Post Test (CBT)', datafield: 'post_test', cellsalign: 'right', cellsformat: 'd2', width: 100 }, { text: '35%', datafield: 'persentase35b', cellsalign: 'right', cellsformat: 'd2', width: 50 }, { text: 'Nilai Akhir', datafield: 'nilai_akhir', cellsalign: 'right', cellsformat: 'd2', width: 70 }, { text: 'Seminar', datafield: 'seminar', cellsalign: 'right', cellsformat: 'd2', width: 60 }, { text: 'Portofolio', datafield: 'portofolio', cellsalign: 'right', cellsformat: 'd2', width: 60 }, { text: 'Rekomendasi', datafield: 'rekomendasi_nama', width: 200 }],
 	        groups: []
 	      };
 
@@ -3259,6 +3259,7 @@
 	    var postTestNumberInput = new _NumberInput2.default({ value: score.post_test, width: '100%', height: 25 });
 	    var nilaiAkhirNumberInput = new _NumberInput2.default({ value: score.nilai_akhir, width: '100%', height: 25 });
 	    var seminarNumberInput = new _NumberInput2.default({ value: score.seminar, width: '100%', height: 25 });
+	    var portofolioNumberInput = new _NumberInput2.default({ value: score.portofolio, width: '100%', height: 25 });
 
 	    var formItems = [{
 	      name: 'studentName',
@@ -3312,6 +3313,10 @@
 	      name: 'seminar',
 	      label: 'Seminar',
 	      content: seminarNumberInput
+	    }, {
+	      name: 'portofolio',
+	      label: 'Portofolio',
+	      content: portofolioNumberInput
 	    }];
 	    var formOptions = {
 	      items: formItems,
@@ -3339,7 +3344,7 @@
 
 	    this.window = new _Window2.default({
 	      width: 420,
-	      height: 520,
+	      height: 550,
 	      title: 'Edit Nilai',
 	      content: form,
 	      onSave: function onSave() {
