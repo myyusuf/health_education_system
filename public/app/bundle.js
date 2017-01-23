@@ -213,7 +213,7 @@
 	  id: 'jadwal_umum',
 	  title: 'Jadwal Umum',
 	  content: scheduleView
-	}]);
+	}], {});
 
 	tabs.render($('#right-content'));
 
@@ -498,11 +498,19 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Tabs = function () {
-	  function Tabs(items) {
+	  function Tabs(items, options) {
 	    _classCallCheck(this, Tabs);
 
 	    this.id = (0, _Utils.guid)();
 	    this.items = items;
+
+	    if (options.width) {
+	      this.width = options.width;
+	    }
+
+	    if (options.height) {
+	      this.height = options.height;
+	    }
 	  }
 
 	  _createClass(Tabs, [{
@@ -528,12 +536,23 @@
 	        tempContainer.push(contentContainer);
 	      }
 
+	      var width = '100%';
+	      var height = '100.5%';
+
+	      if (this.width) {
+	        width = this.width;
+	      }
+
+	      if (this.height) {
+	        height = this.height;
+	      }
+
 	      tabContainer.jqxTabs({
 	        theme: 'metro',
 	        position: 'top',
 	        showCloseButtons: true,
-	        width: '100%',
-	        height: '100.5%'
+	        width: width,
+	        height: height
 	      });
 
 	      for (var i = 0; i < this.items.length; i++) {
@@ -3637,6 +3656,8 @@
 	      this.height = options.height;
 	    }
 
+	    this.basicProperties = options.basicProperties;
+
 	    this.initialValue = options.value;
 	  }
 
@@ -3661,7 +3682,10 @@
 	      if (this.height) {
 	        numberInputOptions['height'] = this.height;
 	      }
-	      numberInputContainer.jqxNumberInput(numberInputOptions);
+
+	      for (var k in _this.basicProperties) {
+	        numberInputOptions[k] = _this.basicProperties[k];
+	      }numberInputContainer.jqxNumberInput(numberInputOptions);
 
 	      if (this.initialValue) {
 	        numberInputContainer.val(this.initialValue);
@@ -5946,13 +5970,9 @@
 
 	var _LevelComboBox2 = _interopRequireDefault(_LevelComboBox);
 
-	var _AddStudentWindow = __webpack_require__(36);
+	var _EditRiwayatMPPDWindow = __webpack_require__(49);
 
-	var _AddStudentWindow2 = _interopRequireDefault(_AddStudentWindow);
-
-	var _EditStudentWindow = __webpack_require__(37);
-
-	var _EditStudentWindow2 = _interopRequireDefault(_EditStudentWindow);
+	var _EditRiwayatMPPDWindow2 = _interopRequireDefault(_EditRiwayatMPPDWindow);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6003,14 +6023,14 @@
 	        source: source,
 	        onSearch: onSearch,
 	        onRowDoubleClick: function onRowDoubleClick(data) {
-	          var editStudentWindow = new _EditStudentWindow2.default({
+	          var editRiwayatMPPDWindow = new _EditRiwayatMPPDWindow2.default({
 	            data: data,
 	            onSaveSuccess: function onSaveSuccess() {
 	              _this.dataGrid.refresh();
 	            }
 	          });
-	          editStudentWindow.render($('#dialogWindowContainer'));
-	          editStudentWindow.open();
+	          editRiwayatMPPDWindow.render($('#dialogWindowContainer'));
+	          editRiwayatMPPDWindow.open();
 	        },
 	        dataGridOptions: dataGridOptions
 	      });
@@ -6071,6 +6091,299 @@
 	}();
 
 	exports.default = RiwayatMPPDList;
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Tabs = __webpack_require__(7);
+
+	var _Tabs2 = _interopRequireDefault(_Tabs);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _Form = __webpack_require__(16);
+
+	var _Form2 = _interopRequireDefault(_Form);
+
+	var _AddWindow = __webpack_require__(17);
+
+	var _AddWindow2 = _interopRequireDefault(_AddWindow);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	var _NumberInput = __webpack_require__(30);
+
+	var _NumberInput2 = _interopRequireDefault(_NumberInput);
+
+	var _CheckBox = __webpack_require__(50);
+
+	var _CheckBox2 = _interopRequireDefault(_CheckBox);
+
+	var _Label = __webpack_require__(29);
+
+	var _Label2 = _interopRequireDefault(_Label);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var EditRiwayatMPPDWindow = function () {
+	  function EditRiwayatMPPDWindow(options) {
+	    _classCallCheck(this, EditRiwayatMPPDWindow);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    var student = options.data;
+	    this.onSaveSuccess = options.onSaveSuccess;
+
+	    var checkBox1 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Terlambat baca referat karena alasan pembimbing' });
+	    var checkBox2 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Terlambat baca referat karena alasan MPPD' });
+	    var checkBox3 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Terlambat ujian karena alasan penguji' });
+	    var checkBox4 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Terlambat ujian karena alasan MPPD' });
+	    var checkBox5 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Terlambat menyelesaikan portofolio' });
+	    var checkBox6 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Terlambat dapat TTD bakordik' });
+	    var checkBox7 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Tidak lulus ujian supervisor' });
+	    var checkBox8 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Adaptasi' });
+	    var checkBox9 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Tidak lulus post test' });
+	    var checkBox10 = new _CheckBox2.default({ height: 25, width: '100%',
+	      label: 'Terlambat keluar siklus karena jumlah kehadiran seminar <80%' });
+
+	    var postTestCountNumberInput = new _NumberInput2.default({
+	      value: 0, width: '50%', height: 25,
+	      basicProperties: {
+	        min: 0,
+	        max: 99,
+	        decimalDigits: 0,
+	        digits: 2,
+	        spinButtons: true
+	      }
+	    });
+
+	    var formItems = [{
+	      name: 'checkBox1',
+	      label: '',
+	      content: checkBox1
+	    }, {
+	      name: 'checkBox2',
+	      label: '',
+	      content: checkBox2
+	    }, {
+	      name: 'checkBox3',
+	      label: '',
+	      content: checkBox3
+	    }, {
+	      name: 'checkBox4',
+	      label: '',
+	      content: checkBox4
+	    }, {
+	      name: 'checkBox5',
+	      label: '',
+	      content: checkBox5
+	    }, {
+	      name: 'checkBox6',
+	      label: '',
+	      content: checkBox6
+	    }, {
+	      name: 'checkBox7',
+	      label: '',
+	      content: checkBox7
+	    }, {
+	      name: 'checkBox8',
+	      label: '',
+	      content: checkBox8
+	    }, {
+	      name: 'checkBox9',
+	      label: '',
+	      content: checkBox9
+	    }, {
+	      name: 'postTestCount',
+	      label: '',
+	      content: postTestCountNumberInput
+	    }, {
+	      name: 'checkBox10',
+	      label: '',
+	      content: checkBox10
+	    }];
+	    var formOptions = {
+	      items: formItems,
+	      labelColumnWidth: '40px',
+	      onValidationSuccess: function onValidationSuccess(formValue) {
+	        $.ajax({
+	          method: "POST",
+	          url: "/students",
+	          data: formValue
+	        }).done(function () {
+	          $("#successNotification").jqxNotification("open");
+	          _this.window.close();
+	          if (_this.onSaveSuccess) {
+	            _this.onSaveSuccess();
+	          }
+	        }).fail(function (jqXHR, textStatus, errorThrown) {
+	          var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	          $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	          $("#errorNotification").jqxNotification("open");
+	        });
+	      }
+	    };
+
+	    var form = new _Form2.default(formOptions);
+
+	    var tabs = new _Tabs2.default([{
+	      id: 'summary',
+	      title: 'Summary',
+	      content: form
+	    }], {
+	      width: 530,
+	      height: 500
+	    });
+
+	    this.window = new _AddWindow2.default({
+	      width: 550,
+	      height: 600,
+	      title: 'Edit Riwayat MPPD',
+	      content: tabs,
+	      onSave: function onSave() {
+	        form.validate();
+	      },
+	      onCancel: function onCancel() {
+	        _this.window.close();
+	      }
+	    });
+	  }
+
+	  _createClass(EditRiwayatMPPDWindow, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+	      this.window.render(container);
+	    }
+	  }, {
+	    key: 'open',
+	    value: function open() {
+	      this.window.open();
+	    }
+	  }]);
+
+	  return EditRiwayatMPPDWindow;
+	}();
+
+	exports.default = EditRiwayatMPPDWindow;
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var CheckBox = function () {
+	  function CheckBox(options) {
+	    _classCallCheck(this, CheckBox);
+
+	    this.id = (0, _Utils.guid)();
+
+	    if (options.label) {
+	      this.label = options.label;
+	    } else {
+	      this.label = '';
+	    }
+
+	    if (options.width) {
+	      this.width = options.width;
+	    }
+
+	    if (options.height) {
+	      this.height = options.height;
+	    }
+
+	    this.placeHolder = options.placeHolder;
+
+	    this.initialValue = options.value;
+	  }
+
+	  _createClass(CheckBox, [{
+	    key: 'render',
+	    value: function render(container) {
+	      var checkBoxContainer = $('<div>' + this.label + '</div>');
+	      checkBoxContainer.attr('id', this.id);
+	      checkBoxContainer.appendTo(container);
+
+	      var checkBoxOptions = {
+	        theme: 'metro'
+	      };
+
+	      if (this.width) {
+	        checkBoxOptions['width'] = this.width;
+	      }
+
+	      if (this.height) {
+	        checkBoxOptions['height'] = this.height;
+	      }
+
+	      if (this.placeHolder) {
+	        checkBoxOptions['placeHolder'] = this.placeHolder;
+	      }
+
+	      checkBoxContainer.jqxCheckBox(checkBoxOptions);
+
+	      if (this.initialValue) {
+	        checkBoxContainer.val(this.initialValue);
+	      }
+
+	      this.component = checkBoxContainer;
+	    }
+	  }, {
+	    key: 'getId',
+	    value: function getId() {
+	      return this.id;
+	    }
+	  }, {
+	    key: 'getValue',
+	    value: function getValue() {
+	      return this.component.val();
+	    }
+	  }]);
+
+	  return CheckBox;
+	}();
+
+	exports.default = CheckBox;
 
 /***/ }
 /******/ ]);
