@@ -221,6 +221,9 @@ module.exports = function(app, passport, db) {
   app.get('/reporting/costunit', function(req, res) {
     reportingData.costUnit(req, res, db);
   });
+  app.get('/reporting/riwayatmppd', function(req, res) {
+    reportingData.riwayatMPPD(req, res, db);
+  });
 
   app.get('/weeklyschedules', function(req, res) {
     weeklyScheduleData.list(req, res, db);

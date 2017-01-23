@@ -104,6 +104,10 @@
 
 	var _CostUnitReport2 = _interopRequireDefault(_CostUnitReport);
 
+	var _RiwayatMPPDList = __webpack_require__(48);
+
+	var _RiwayatMPPDList2 = _interopRequireDefault(_RiwayatMPPDList);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var splitter = new _Splitter2.default();
@@ -147,6 +151,9 @@
 	  label: "Laporan",
 	  expanded: true,
 	  items: [{
+	    id: 'riwayat_mppd',
+	    label: "Riwayat MPPD"
+	  }, {
 	    id: 'cost_unit',
 	    label: "Cost Unit"
 	  }]
@@ -173,6 +180,8 @@
 	        tabs.add(item.id, item.label, costUnitReport);
 	      } else if (item.id == 'data_rs') {
 	        tabs.add(item.id, item.label, hospitalList);
+	      } else if (item.id == 'riwayat_mppd') {
+	        tabs.add(item.id, item.label, riwayatMPPDList);
 	      }
 	    }
 	  }
@@ -188,6 +197,7 @@
 	var costUnitReport = new _CostUnitReport2.default();
 	var hospitalScheduleView = new _HospitalScheduleView2.default();
 	var clinicScheduleView = new _ClinicScheduleView2.default();
+	var riwayatMPPDList = new _RiwayatMPPDList2.default();
 
 	var navigationBar = new _NavigationBar2.default([{
 	  title: 'Application',
@@ -5901,6 +5911,166 @@
 	}();
 
 	exports.default = CostUnitReport;
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _ToggleButton = __webpack_require__(10);
+
+	var _ToggleButton2 = _interopRequireDefault(_ToggleButton);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	var _DataGrid = __webpack_require__(25);
+
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+
+	var _LevelComboBox = __webpack_require__(14);
+
+	var _LevelComboBox2 = _interopRequireDefault(_LevelComboBox);
+
+	var _AddStudentWindow = __webpack_require__(36);
+
+	var _AddStudentWindow2 = _interopRequireDefault(_AddStudentWindow);
+
+	var _EditStudentWindow = __webpack_require__(37);
+
+	var _EditStudentWindow2 = _interopRequireDefault(_EditStudentWindow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var RiwayatMPPDList = function () {
+	  function RiwayatMPPDList() {
+	    _classCallCheck(this, RiwayatMPPDList);
+
+	    this.id = (0, _Utils.guid)();
+	  }
+
+	  _createClass(RiwayatMPPDList, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+
+	      var url = "/reporting/riwayatmppd";
+
+	      var source = {
+	        datatype: "json",
+	        datafields: [{ name: 'id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'status', type: 'string' }],
+	        id: "id",
+	        url: url
+	      };
+
+	      var onSearch = function onSearch(data) {
+	        data['searchTxt'] = searchTextBox.getValue();
+	        return data;
+	      };
+
+	      var dataGridOptions = {
+	        width: '100%',
+	        height: '100%',
+	        pageable: true,
+	        altrows: true,
+	        theme: 'metro',
+	        virtualmode: true,
+	        rendergridrows: function rendergridrows(params) {
+	          return params.data;
+	        },
+	        columns: [{ text: 'Stambuk Lama', datafield: 'stambuk_lama', width: '25%' }, { text: 'Stambuk Baru', datafield: 'stambuk_baru', width: '25%' }, { text: 'Nama', datafield: 'nama', width: '25%' }, { text: 'Status', datafield: 'status', width: '25%' }],
+	        groups: []
+	      };
+
+	      this.dataGrid = new _DataGrid2.default({
+	        source: source,
+	        onSearch: onSearch,
+	        onRowDoubleClick: function onRowDoubleClick(data) {
+	          var editStudentWindow = new _EditStudentWindow2.default({
+	            data: data,
+	            onSaveSuccess: function onSaveSuccess() {
+	              _this.dataGrid.refresh();
+	            }
+	          });
+	          editStudentWindow.render($('#dialogWindowContainer'));
+	          editStudentWindow.open();
+	        },
+	        dataGridOptions: dataGridOptions
+	      });
+
+	      var searchTextBox = new _TextBox2.default({ placeHolder: 'Stambuk atau Nama', width: 250, height: 24 });
+	      var levelComboBox = new _LevelComboBox2.default({});
+	      var searchButton = new _Button2.default({
+	        imgSrc: '/ceu_assets/images/search.png',
+	        theme: 'metro',
+	        width: 30,
+	        height: 26,
+	        onClick: function onClick() {
+	          _this.dataGrid.refresh();
+	        }
+	      });
+
+	      var table = $('<table style="height: 100%; width: 100%; margin: -3px; "></table>');
+	      var tr = $('<tr></tr>');
+	      var td = $('<td style="padding: 0; height: 40px;"></td>');
+	      table.appendTo(container);
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      var innerTable = $('<table style="height: 100%; width: 100%;"></table>');
+	      var innerTr = $('<tr></tr>');
+	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 50px; height: 100%;"></td>');
+	      innerTable.appendTo(td);
+	      innerTr.appendTo(innerTable);
+	      innerTd.appendTo(innerTr);
+	      searchTextBox.render(innerTd);
+
+	      innerTd = $('<td style="padding-top: 6px; height: 100%; "></td>');
+	      var _tempContainer = $('<div style="margin-left: -5px;"></div>');
+	      _tempContainer.appendTo(innerTd);
+	      innerTd.appendTo(innerTr);
+	      searchButton.render(_tempContainer);
+
+	      // var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
+	      // innerTd.appendTo(innerTr);
+	      // searchTextBox.render(innerTd);
+	      //
+	      // innerTd = $('<td style="padding-top: 6px; height: 100%;"></td>');
+	      // var _tempContainer = $('<div style="margin-left: -5px;"></div>')
+	      // _tempContainer.appendTo(innerTd);
+	      // innerTd.appendTo(innerTr);
+	      // searchButton.render(_tempContainer);
+
+	      tr = $('<tr></tr>');
+	      td = $('<td style="padding: 0;"></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      this.dataGrid.render(td);
+	    }
+	  }]);
+
+	  return RiwayatMPPDList;
+	}();
+
+	exports.default = RiwayatMPPDList;
 
 /***/ }
 /******/ ]);

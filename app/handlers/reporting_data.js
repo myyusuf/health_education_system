@@ -84,3 +84,40 @@ exports.costUnit = function(req, res, db) {
   );
 
 };
+
+exports.riwayatMPPD = function(req, res, db) {
+
+  var query = "SELECT rm.*, s.* from tb_riwayat_mppd rm " +
+    "LEFT JOIN tb_siswa s ON rm.siswa_id = s.id " +
+    "WHERE (s.stambuk_lama LIKE ? or s.stambuk_baru LIKE ? or s.nama LIKE ?) " +
+    "order by s.nama " +
+    "LIMIT ?,? ";
+    var pagesize = parseInt(req.param('pagesize'));
+    var pagenum = parseInt(req.param('pagenum'));
+    var stambukLamaLike = req.param('searchTxt') + '%';
+    var stambukBaruLike = req.param('searchTxt') + '%';
+    var namaLike = '%' + req.param('searchTxt') + '%';
+    // var level = req.param('level');
+
+    db.query(
+      query, [stambukLamaLike, stambukBaruLike, namaLike, pagenum * pagesize, pagesize],
+      function(err, rows) {
+        if (err) throw err;
+
+        var query = "SELECT count(1) as totalRecords from tb_riwayat_mppd rm " +
+          "LEFT JOIN tb_siswa s ON rm.siswa_id = s.id " +
+          "WHERE (s.stambuk_lama LIKE ? or s.stambuk_baru LIKE ? or s.nama LIKE ?) ";
+        db.query(
+          query, [stambukLamaLike, stambukBaruLike, namaLike],
+          function(err, rows2) {
+            if (err) throw err;
+
+            var totalRecords = rows2[0].totalRecords;
+            res.json({data: rows, totalRecords: totalRecords});
+          }
+        );
+
+      }
+    );
+
+};
