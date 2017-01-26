@@ -12,6 +12,7 @@ var weeklyScheduleData = require('./handlers/weekly_schedule_data.js');
 var divisionData = require('./handlers/division_data.js');
 var hospitalData = require('./handlers/hospital_data.js');
 var reportingData = require('./handlers/reporting_data.js');
+var studentMppd = require('./handlers/student_mppd.js');
 
 module.exports = function(app, passport, db) {
 
@@ -227,6 +228,13 @@ module.exports = function(app, passport, db) {
 
   app.get('/weeklyschedules', function(req, res) {
     weeklyScheduleData.list(req, res, db);
+  });
+
+  app.post('/medicalinfo', function(req, res) {
+    studentMppd.addMedicalInfo(req, res, db);
+  });
+  app.get('/medicalinfo', function(req, res) {
+    studentMppd.listMedicalInfo(req, res, db);
   });
 };
 
