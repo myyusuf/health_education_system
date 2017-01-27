@@ -22,11 +22,15 @@ exports.addMedicalInfo = function(req, res, db) {
 exports.listMedicalInfo = function(req, res, db) {
 
   var riwayatMppdId = req.params.riwayatMppdId;
+  var bagianId = parseInt(req.param('bagian'));
 
-  var query = "SELECT * FROM tb_surat_sakit WHERE riwayat_mppd_id = ? ";
+  var query = "SELECT ss.*, b.id AS bagian_id, b.code AS bagian_code, b.nama AS bagian_nama " +
+  "FROM tb_surat_sakit ss " +
+  "LEFT JOIN tb_bagian b ON ss.bagian_id = b.id " +
+  "WHERE ss.riwayat_mppd_id = ? AND b.id = ? ";
 
   db.query(
-    query, [riwayatMppdId],
+    query, [riwayatMppdId, bagianId],
     function(err, rows) {
       if (err) throw err;
       res.json(rows);

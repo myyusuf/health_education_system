@@ -3168,7 +3168,9 @@
 	      clearSelectionEnabled: true,
 	      value: options.value,
 	      onChange: function onChange(value) {
-	        //
+	        if (options.onChange) {
+	          options.onChange(value);
+	        }
 	      }
 	    });
 	  }
@@ -6223,9 +6225,15 @@
 	  function StudentForm(options) {
 	    _classCallCheck(this, StudentForm);
 
+	    var _this = this;
 	    this.id = (0, _Utils.guid)();
 	    this.riwayatMppd = options.riwayatMppd;
-	    this.studentInfo = new _StudentInfo2.default({ student: { nama: 'marliyanti' } });
+	    this.studentInfo = new _StudentInfo2.default({
+	      student: { nama: 'marliyanti' },
+	      onDivisionChange: function onDivisionChange(value) {
+	        _this.medicalInfo.changeDivision(value);
+	      }
+	    });
 	    this.scoreInfo = new _ScoreInfo2.default({});
 	    this.problemInfo = new _ProblemInfo2.default({});
 	    this.medicalInfo = new _MedicalInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
@@ -6321,6 +6329,7 @@
 
 	    this.id = (0, _Utils.guid)();
 	    this.student = options.student;
+	    this.onDivisionChange = options.onDivisionChange;
 	  }
 
 	  _createClass(StudentInfo, [{
@@ -6331,7 +6340,9 @@
 
 	      var nameStr = this.student.nama + ' [ ' + this.student.stambuk_lama + ' - ' + this.student.stambuk_baru + ' ]';
 	      var nameLabel = new _Label2.default({ text: nameStr, bold: true });
-	      var divisionComboBox = new _DivisionComboBox2.default({});
+	      var divisionComboBox = new _DivisionComboBox2.default({
+	        onChange: _this.onDivisionChange
+	      });
 
 	      var table = $('<table style="height: 100%; width: 50%; margin: -3px; "></table>');
 	      var tr = $('<tr></tr>');
@@ -6895,14 +6906,15 @@
 	    this.id = (0, _Utils.guid)();
 
 	    this.riwayatMppdId = options.riwayatMppdId;
+	    this.bagianId = 0;
 
 	    var _this = this;
 
-	    var url = "/medicalinfo/1";
+	    var url = "/medicalinfo/" + this.riwayatMppdId;
 
 	    var source = {
 	      datatype: "json",
-	      datafields: [{ name: 'id', type: 'int' }, { name: 'tanggal', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'keterangan', type: 'string' }, { name: 'jumlah_hari', type: 'string' }, { name: 'bagian', type: 'string' }],
+	      datafields: [{ name: 'id', type: 'int' }, { name: 'tanggal', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'keterangan', type: 'string' }, { name: 'jumlah_hari', type: 'string' }, { name: 'bagian_id', type: 'int' }, { name: 'bagian_code', type: 'string' }, { name: 'bagian_nama', type: 'string' }],
 	      id: "id",
 	      url: url
 	    };
@@ -6917,13 +6929,14 @@
 	      rendergridrows: function rendergridrows(params) {
 	        return params.data;
 	      },
-	      columns: [{ text: 'Tanggal', datafield: 'tanggal', width: '20%' }, { text: 'Keterangan', datafield: 'keterangan', width: '40%' }, { text: 'Jumlah Hari', datafield: 'jumlah_hari', width: '15%' }, { text: 'Bagian', datafield: 'bagian', width: '25%' }],
+	      columns: [{ text: 'Tanggal', datafield: 'tanggal', cellsformat: 'dd-MM-yyyy', width: '20%' }, { text: 'Keterangan', datafield: 'keterangan', width: '40%' }, { text: 'Jumlah Hari', datafield: 'jumlah_hari', cellsalign: 'right', cellsformat: 'd', width: '15%' }, { text: 'Bagian', datafield: 'bagian_nama', width: '25%' }],
 	      groups: []
 	    };
 
 	    var onSearch = function onSearch(data) {
 	      // data['searchTxt'] = searchTextBox.getValue();
 	      // data['level'] = levelComboBox.getValue();
+	      data['bagian'] = _this.bagianId;
 	      return data;
 	    };
 
@@ -6988,6 +7001,12 @@
 
 	      this.dataGrid.render(td);
 	    }
+	  }, {
+	    key: 'changeDivision',
+	    value: function changeDivision(bagianId) {
+	      this.bagianId = bagianId;
+	      this.dataGrid.refresh();
+	    }
 	  }]);
 
 	  return Medicalnfo;
@@ -7036,7 +7055,13 @@
 	    this.onSaveSuccess = options.onSaveSuccess;
 
 	    var addMedicalInfoForm = new _AddMedicalInfoForm2.default({
-	      riwayatMppdId: options.riwayatMppdId
+	      riwayatMppdId: options.riwayatMppdId,
+	      onSaveSuccess: function onSaveSuccess() {
+	        _this.window.close();
+	        if (_this.onSaveSuccess) {
+	          _this.onSaveSuccess();
+	        }
+	      }
 	    });
 
 	    this.window = new _AddWindow2.default({
@@ -7135,6 +7160,7 @@
 	    this.id = (0, _Utils.guid)();
 
 	    this.riwayatMppdId = options.riwayatMppdId;
+	    this.onSaveSuccess = options.onSaveSuccess;
 
 	    var tanggalDateInput = new _DateInput2.default({ height: 25, width: 220 });
 	    var descriptionTextArea = new _TextArea2.default({ height: 80, width: 220, placeHolder: '' });
@@ -7183,7 +7209,6 @@
 	          data: formValue
 	        }).done(function () {
 	          $("#successNotification").jqxNotification("open");
-	          _this.window.close();
 	          if (_this.onSaveSuccess) {
 	            _this.onSaveSuccess();
 	          }
