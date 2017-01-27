@@ -1,3 +1,8 @@
+var formidable = require('formidable'),
+fs = require('fs-extra');
+
+var ceuConstant = require('../../config/ceu_constant.js');
+
 exports.addMedicalInfo = function(req, res, db) {
 
   var medicalInfo = {
@@ -36,5 +41,40 @@ exports.listMedicalInfo = function(req, res, db) {
       res.json(rows);
     }
   );
+
+};
+
+exports.uploadMedicalInfo = function(req, res){
+
+  var medicalInfoId = req.params.medicalInfoId;
+
+	var form = new formidable.IncomingForm();
+	form.parse(req, function(err, fields, files){
+		if(err) return res.redirect(303, '/error');
+		console.log('received fields:');
+		console.log(fields);
+		console.log('received files:');
+		console.log(files);
+
+		var temp_path = files.theFile.path;
+
+		var file_name = files.theFile.name;
+
+		var new_location = ceuConstant.MEDICAL_INFO_DIR;
+		var _newfileName = file_name + "_" + medicalInfoId + '.jpg';
+		var _newfilePath = new_location + _newfileName;
+
+		fs.copy(temp_path, _newfilePath, function(err) {
+			if (err) {
+				console.error(err);
+			} else {
+				console.log("success!");
+
+			}
+		});
+
+		res.json({status: 'UPLOAD_SUCCESS'});
+
+	});
 
 };

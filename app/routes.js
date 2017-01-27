@@ -236,6 +236,10 @@ module.exports = function(app, passport, db) {
   app.get('/medicalinfo/:riwayatMppdId', function(req, res) {
     studentMppd.listMedicalInfo(req, res, db);
   });
+
+  app.post('/medicalinfo_upload/:medicalInfoId', function(req, res) {
+    studentMppd.uploadMedicalInfo(req, res, db);
+  });
 };
 
 // route middleware to make sure
