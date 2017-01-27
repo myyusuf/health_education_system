@@ -167,3 +167,21 @@ exports.updateMedicalInfo = function(req, res, db) {
     }
   });
 };
+
+exports.deleteMedicalInfo = function(req, res, db) {
+
+  var medicalInfoId = req.params.medicalInfoId;
+
+  db.query(
+  'DELETE FROM tb_surat_sakit WHERE id = ?',
+  [medicalInfoId],
+  function (err, result) {
+    if(err){
+      console.log(err);
+      res.status(500).send('Error while doing operation.');
+    }else{
+      res.json({status: 'DELETE_SUCCESS'});
+    }
+  });
+
+};

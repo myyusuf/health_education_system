@@ -248,6 +248,10 @@ module.exports = function(app, passport, db) {
   app.put('/medicalinfo/:medicalInfoId', function(req, res) {
     studentMppd.updateMedicalInfo(req, res, db);
   });
+
+  app.delete('/medicalinfo/:medicalInfoId', function(req, res) {
+    studentMppd.deleteMedicalInfo(req, res, db);
+  });
 };
 
 // route middleware to make sure

@@ -7345,9 +7345,9 @@
 
 	var _Button2 = _interopRequireDefault(_Button);
 
-	var _AddWindow = __webpack_require__(17);
+	var _EditWindow = __webpack_require__(38);
 
-	var _AddWindow2 = _interopRequireDefault(_AddWindow);
+	var _EditWindow2 = _interopRequireDefault(_EditWindow);
 
 	var _EditMedicalInfoForm = __webpack_require__(61);
 
@@ -7366,9 +7366,10 @@
 	    this.id = (0, _Utils.guid)();
 
 	    this.onSaveSuccess = options.onSaveSuccess;
+	    this.medicalInfo = options.medicalInfo;
 
 	    var editMedicalInfoForm = new _EditMedicalInfoForm2.default({
-	      medicalInfo: options.medicalInfo,
+	      medicalInfo: this.medicalInfo,
 	      onSaveSuccess: function onSaveSuccess() {
 	        _this.window.close();
 	        if (_this.onSaveSuccess) {
@@ -7377,7 +7378,7 @@
 	      }
 	    });
 
-	    this.window = new _AddWindow2.default({
+	    this.window = new _EditWindow2.default({
 	      width: 390,
 	      height: 430,
 	      title: 'Edit Surat Sakit',
@@ -7387,6 +7388,26 @@
 	      },
 	      onCancel: function onCancel() {
 	        _this.window.close();
+	      },
+	      onDelete: function onDelete() {
+	        var r = confirm("Proses hapus data akan dilakukan!");
+	        if (r == true) {
+	          $.ajax({
+	            method: "DELETE",
+	            url: "/medicalinfo/" + _this.medicalInfo.id,
+	            data: {}
+	          }).done(function () {
+	            $("#successNotification").jqxNotification("open");
+	            _this.window.close();
+	            if (_this.onSaveSuccess) {
+	              _this.onSaveSuccess();
+	            }
+	          }).fail(function () {
+	            var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	            $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	            $("#errorNotification").jqxNotification("open");
+	          });
+	        }
 	      }
 	    });
 	  }
