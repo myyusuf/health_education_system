@@ -233,7 +233,7 @@ module.exports = function(app, passport, db) {
   app.post('/medicalinfo', function(req, res) {
     studentMppd.addMedicalInfo(req, res, db);
   });
-  app.get('/medicalinfo', function(req, res) {
+  app.get('/medicalinfo/:riwayatMppdId', function(req, res) {
     studentMppd.listMedicalInfo(req, res, db);
   });
 };

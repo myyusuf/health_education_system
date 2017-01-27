@@ -6135,10 +6135,10 @@
 
 	    this.id = (0, _Utils.guid)();
 
-	    var student = options.data;
+	    var riwayatMppd = options.data;
 	    this.onSaveSuccess = options.onSaveSuccess;
 
-	    var studentForm = new _StudentForm2.default(student, {});
+	    var studentForm = new _StudentForm2.default({ riwayatMppd: riwayatMppd });
 
 	    this.window = new _AddWindow2.default({
 	      width: 550,
@@ -6220,14 +6220,15 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var StudentForm = function () {
-	  function StudentForm(student, options) {
+	  function StudentForm(options) {
 	    _classCallCheck(this, StudentForm);
 
 	    this.id = (0, _Utils.guid)();
-	    this.studentInfo = new _StudentInfo2.default(student, {});
-	    this.scoreInfo = new _ScoreInfo2.default(student, {});
+	    this.riwayatMppd = options.riwayatMppd;
+	    this.studentInfo = new _StudentInfo2.default({ student: { nama: 'marliyanti' } });
+	    this.scoreInfo = new _ScoreInfo2.default({});
 	    this.problemInfo = new _ProblemInfo2.default({});
-	    this.medicalInfo = new _MedicalInfo2.default({});
+	    this.medicalInfo = new _MedicalInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
 	    this.permissionInfo = new _PermissionInfo2.default({});
 	    this.leaveInfo = new _LeaveInfo2.default({});
 	  }
@@ -6315,11 +6316,11 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var StudentInfo = function () {
-	  function StudentInfo(student, options) {
+	  function StudentInfo(options) {
 	    _classCallCheck(this, StudentInfo);
 
 	    this.id = (0, _Utils.guid)();
-	    this.student = student;
+	    this.student = options.student;
 	  }
 
 	  _createClass(StudentInfo, [{
@@ -6893,13 +6894,15 @@
 
 	    this.id = (0, _Utils.guid)();
 
+	    this.riwayatMppdId = options.riwayatMppdId;
+
 	    var _this = this;
 
-	    var url = "/students";
+	    var url = "/medicalinfo/1";
 
 	    var source = {
 	      datatype: "json",
-	      datafields: [{ name: 'id', type: 'int' }, { name: 'tanggal', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'keterangan', type: 'string' }, { name: 'jumlah_hari', type: 'string' }, { name: 'divisi', type: 'string' }],
+	      datafields: [{ name: 'id', type: 'int' }, { name: 'tanggal', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'keterangan', type: 'string' }, { name: 'jumlah_hari', type: 'string' }, { name: 'bagian', type: 'string' }],
 	      id: "id",
 	      url: url
 	    };
@@ -6914,7 +6917,7 @@
 	      rendergridrows: function rendergridrows(params) {
 	        return params.data;
 	      },
-	      columns: [{ text: 'Tanggal', datafield: 'tanggal', width: '20%' }, { text: 'Keterangan', datafield: 'keterangan', width: '40%' }, { text: 'Jumlah Hari', datafield: 'jumlah_hari', width: '15%' }, { text: 'Bagian', datafield: 'divisi', width: '25%' }],
+	      columns: [{ text: 'Tanggal', datafield: 'tanggal', width: '20%' }, { text: 'Keterangan', datafield: 'keterangan', width: '40%' }, { text: 'Jumlah Hari', datafield: 'jumlah_hari', width: '15%' }, { text: 'Bagian', datafield: 'bagian', width: '25%' }],
 	      groups: []
 	    };
 
@@ -6945,12 +6948,15 @@
 	    key: 'render',
 	    value: function render(container) {
 
+	      var _this = this;
+
 	      var addMedicalInfo = new _Button2.default({
 	        title: 'Tambah Surat Sakit',
 	        template: 'primary',
 	        height: 26,
 	        onClick: function onClick() {
 	          var addMedicalInfoWindow = new _AddMedicalInfoWindow2.default({
+	            riwayatMppdId: _this.riwayatMppdId,
 	            onSaveSuccess: function onSaveSuccess() {
 	              _this.dataGrid.refresh();
 	            }
@@ -7027,10 +7033,11 @@
 
 	    this.id = (0, _Utils.guid)();
 
-	    var student = options.data;
 	    this.onSaveSuccess = options.onSaveSuccess;
 
-	    var addMedicalInfoForm = new _AddMedicalInfoForm2.default({});
+	    var addMedicalInfoForm = new _AddMedicalInfoForm2.default({
+	      riwayatMppdId: options.riwayatMppdId
+	    });
 
 	    this.window = new _AddWindow2.default({
 	      width: 390,
@@ -7123,7 +7130,11 @@
 	  function AddMedicalInfoForm(options) {
 	    _classCallCheck(this, AddMedicalInfoForm);
 
+	    var _this = this;
+
 	    this.id = (0, _Utils.guid)();
+
+	    this.riwayatMppdId = options.riwayatMppdId;
 
 	    var tanggalDateInput = new _DateInput2.default({ height: 25, width: 220 });
 	    var descriptionTextArea = new _TextArea2.default({ height: 80, width: 220, placeHolder: '' });
@@ -7152,7 +7163,7 @@
 	      label: 'Jumlah Hari',
 	      content: jumlahHariNumberInput
 	    }, {
-	      name: 'bagian',
+	      name: 'bagian_id',
 	      label: 'Bagian',
 	      content: divisionComboBox,
 	      validation: {
@@ -7164,6 +7175,8 @@
 	      items: formItems,
 	      labelColumnWidth: '120px',
 	      onValidationSuccess: function onValidationSuccess(formValue) {
+
+	        formValue['riwayat_mppd_id'] = _this.riwayatMppdId;
 	        $.ajax({
 	          method: "POST",
 	          url: "/medicalinfo",
@@ -7186,6 +7199,11 @@
 	  }
 
 	  _createClass(AddMedicalInfoForm, [{
+	    key: 'validate',
+	    value: function validate() {
+	      this.form.validate();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render(container) {
 
@@ -7269,7 +7287,7 @@
 	  }, {
 	    key: 'getValue',
 	    value: function getValue() {
-	      return this.dateInputContainer.jqxDateTimeInput('val');
+	      return this.dateInputContainer.jqxDateTimeInput('getDate');
 	    }
 	  }]);
 
