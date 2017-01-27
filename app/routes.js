@@ -240,6 +240,10 @@ module.exports = function(app, passport, db) {
   app.post('/medicalinfo_upload/:medicalInfoId', function(req, res) {
     studentMppd.uploadMedicalInfo(req, res, db);
   });
+
+  app.get('/medicalinfo_image/:medicalInfoId', function(req, res) {
+    studentMppd.medicalInfoViewImage(req, res, db);
+  });
 };
 
 // route middleware to make sure

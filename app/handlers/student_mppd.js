@@ -44,7 +44,7 @@ exports.listMedicalInfo = function(req, res, db) {
 
 };
 
-exports.uploadMedicalInfo = function(req, res){
+exports.uploadMedicalInfo = function(req, res, db){
 
   var medicalInfoId = req.params.medicalInfoId;
 
@@ -61,20 +61,75 @@ exports.uploadMedicalInfo = function(req, res){
 		var file_name = files.theFile.name;
 
 		var new_location = ceuConstant.MEDICAL_INFO_DIR;
-		var _newfileName = file_name + "_" + medicalInfoId + '.jpg';
-		var _newfilePath = new_location + _newfileName;
+		var newfilePath = new_location + file_name;
 
-		fs.copy(temp_path, _newfilePath, function(err) {
+		fs.copy(temp_path, newfilePath, function(err) {
 			if (err) {
 				console.error(err);
 			} else {
 				console.log("success!");
 
+        db.query(
+        'UPDATE tb_surat_sakit SET file_name = ? '+
+        'WHERE id = ?',
+        [
+          file_name,
+          medicalInfoId
+        ],
+        function (err, result) {
+          if(err){
+            res.status(500).send('Error while doing operation.');
+          }else{
+            res.json({status: 'UPDATE_SUCCESS'});
+          }
+        });
+
 			}
 		});
 
-		res.json({status: 'UPLOAD_SUCCESS'});
+		// res.json({status: 'UPLOAD_SUCCESS'});
 
 	});
+
+};
+
+exports.medicalInfoViewImage = function (req, res, db) {
+
+    var medicalInfoId = req.params.medicalInfoId;
+
+    var query = "SELECT * FROM tb_surat_sakit where id = ? ";
+
+    db.query(
+      query, [medicalInfoId],
+      function(err, rows) {
+        if (err) throw err;
+
+        if(rows.length > 0){
+          var medicalInfo = rows[0];
+          var fileName = medicalInfo.file_name;
+          var directory = ceuConstant.MEDICAL_INFO_DIR;
+          var filePath = directory + fileName;
+
+          console.log('filePath : ' + filePath);
+
+          fs.readFile(filePath, function (err, content) {
+              if (err) {
+                  res.writeHead(400, {
+                      'Content-type': 'image/jpeg'
+                  })
+                  console.log(err);
+                  res.end("No file found.");
+              } else {
+                  //specify Content will be an attachment
+                  res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
+                  res.end(content);
+              }
+          });
+        }else{
+          res.status(500).send('Medical info not found');
+        }
+
+      }
+    );
 
 };

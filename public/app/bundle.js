@@ -6205,11 +6205,11 @@
 
 	var _MedicalInfo2 = _interopRequireDefault(_MedicalInfo);
 
-	var _PermissionInfo = __webpack_require__(60);
+	var _PermissionInfo = __webpack_require__(65);
 
 	var _PermissionInfo2 = _interopRequireDefault(_PermissionInfo);
 
-	var _LeaveInfo = __webpack_require__(61);
+	var _LeaveInfo = __webpack_require__(66);
 
 	var _LeaveInfo2 = _interopRequireDefault(_LeaveInfo);
 
@@ -6895,7 +6895,7 @@
 
 	var _AddMedicalInfoWindow2 = _interopRequireDefault(_AddMedicalInfoWindow);
 
-	var _EditMedicalInfoWindow = __webpack_require__(62);
+	var _EditMedicalInfoWindow = __webpack_require__(60);
 
 	var _EditMedicalInfoWindow2 = _interopRequireDefault(_EditMedicalInfoWindow);
 
@@ -7341,6 +7341,582 @@
 
 	var _Utils = __webpack_require__(3);
 
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _AddWindow = __webpack_require__(17);
+
+	var _AddWindow2 = _interopRequireDefault(_AddWindow);
+
+	var _EditMedicalInfoForm = __webpack_require__(61);
+
+	var _EditMedicalInfoForm2 = _interopRequireDefault(_EditMedicalInfoForm);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var EditMedicalInfoWindow = function () {
+	  function EditMedicalInfoWindow(options) {
+	    _classCallCheck(this, EditMedicalInfoWindow);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    this.onSaveSuccess = options.onSaveSuccess;
+
+	    var editMedicalInfoForm = new _EditMedicalInfoForm2.default({
+	      medicalInfo: options.medicalInfo
+	    });
+
+	    this.window = new _AddWindow2.default({
+	      width: 390,
+	      height: 430,
+	      title: 'Edit Surat Sakit',
+	      content: editMedicalInfoForm,
+	      onSave: function onSave() {
+	        editMedicalInfoForm.validate();
+	      },
+	      onCancel: function onCancel() {
+	        _this.window.close();
+	      }
+	    });
+	  }
+
+	  _createClass(EditMedicalInfoWindow, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+	      this.window.render(container);
+	    }
+	  }, {
+	    key: 'open',
+	    value: function open() {
+	      this.window.open();
+	    }
+	  }]);
+
+	  return EditMedicalInfoWindow;
+	}();
+
+	exports.default = EditMedicalInfoWindow;
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _Form = __webpack_require__(16);
+
+	var _Form2 = _interopRequireDefault(_Form);
+
+	var _AddWindow = __webpack_require__(17);
+
+	var _AddWindow2 = _interopRequireDefault(_AddWindow);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	var _DateInput = __webpack_require__(59);
+
+	var _DateInput2 = _interopRequireDefault(_DateInput);
+
+	var _TextArea = __webpack_require__(55);
+
+	var _TextArea2 = _interopRequireDefault(_TextArea);
+
+	var _NumberInput = __webpack_require__(30);
+
+	var _NumberInput2 = _interopRequireDefault(_NumberInput);
+
+	var _FileUpload = __webpack_require__(62);
+
+	var _FileUpload2 = _interopRequireDefault(_FileUpload);
+
+	var _Label = __webpack_require__(29);
+
+	var _Label2 = _interopRequireDefault(_Label);
+
+	var _DivisionComboBox = __webpack_require__(26);
+
+	var _DivisionComboBox2 = _interopRequireDefault(_DivisionComboBox);
+
+	var _ViewImageWindow = __webpack_require__(63);
+
+	var _ViewImageWindow2 = _interopRequireDefault(_ViewImageWindow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var EditMedicalInfoForm = function () {
+	  function EditMedicalInfoForm(options) {
+	    _classCallCheck(this, EditMedicalInfoForm);
+
+	    this.id = (0, _Utils.guid)();
+
+	    this.medicalInfo = options.medicalInfo;
+	    this.onSaveSuccess = options.onSaveSuccess;
+
+	    var tanggalDateInput = new _DateInput2.default({ height: 25, width: '90%' });
+	    var descriptionTextArea = new _TextArea2.default({ height: 80, width: '90%', placeHolder: '' });
+	    var jumlahHariNumberInput = new _NumberInput2.default({
+	      value: 1, width: '90%', height: 25,
+	      basicProperties: {
+	        min: 1,
+	        max: 31,
+	        decimalDigits: 0,
+	        digits: 2,
+	        spinButtons: true
+	      }
+	    });
+	    var divisionComboBox = new _DivisionComboBox2.default({ value: 1 });
+
+	    this.fileUpload = new _FileUpload2.default({
+	      width: 220,
+	      uploadUrl: 'medicalinfo_upload/' + this.medicalInfo.id,
+	      fileInputName: 'theFile'
+	    });
+
+	    var formItems = [{
+	      name: 'tanggal',
+	      label: 'Tanggal',
+	      content: tanggalDateInput
+	    }, {
+	      name: 'keterangan',
+	      label: 'Keterangan',
+	      content: descriptionTextArea
+	    }, {
+	      name: 'jumlah_hari',
+	      label: 'Jumlah Hari',
+	      content: jumlahHariNumberInput
+	    }, {
+	      name: 'bagian',
+	      label: 'Bagian',
+	      content: divisionComboBox,
+	      validation: {
+	        type: 'COMBOBOX',
+	        rule: 'required'
+	      }
+	    }];
+	    var formOptions = {
+	      items: formItems,
+	      labelColumnWidth: '120px',
+	      onValidationSuccess: function onValidationSuccess(formValue) {
+	        $.ajax({
+	          method: "POST",
+	          url: "/medicalinfo",
+	          data: formValue
+	        }).done(function () {
+	          $("#successNotification").jqxNotification("open");
+	          _this.window.close();
+	          if (_this.onSaveSuccess) {
+	            _this.onSaveSuccess();
+	          }
+	        }).fail(function (jqXHR, textStatus, errorThrown) {
+	          var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	          $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	          $("#errorNotification").jqxNotification("open");
+	        });
+	      }
+	    };
+
+	    this.form = new _Form2.default(formOptions);
+	  }
+
+	  _createClass(EditMedicalInfoForm, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+
+	      var table = $('<table style="height: 70%; width: 100%; "></table>');
+	      var tr = $('<tr></tr>');
+	      var td = $('<td style="padding: 0; height: 40px;"></td>');
+	      table.appendTo(container);
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      this.form.render(td);
+
+	      tr = $('<tr></tr>');
+	      td = $('<td style="padding-left: 125px; height: 30px;"></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+	      this.fileUpload.render(td);
+
+	      var viewImage = new _Button2.default({
+	        title: 'View Image',
+	        template: 'primary',
+	        height: 26,
+	        onClick: function onClick() {
+	          var viewImageWindow = new _ViewImageWindow2.default({
+	            url: 'medicalinfo_image/' + _this.medicalInfo.id
+	          });
+	          viewImageWindow.render($('#dialogWindowContainer'));
+	          viewImageWindow.open();
+	        }
+	      });
+
+	      tr = $('<tr></tr>');
+	      td = $('<td style="padding-left: 125px; height: 30px;"></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      viewImage.render(td);
+	    }
+	  }]);
+
+	  return EditMedicalInfoForm;
+	}();
+
+	exports.default = EditMedicalInfoForm;
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	//DON'T PUT THIS IN <form></form> TAG
+	//THIS IS NOT PART OF FORM!!!!!
+
+	var FileUpload = function () {
+	  function FileUpload(options) {
+	    _classCallCheck(this, FileUpload);
+
+	    this.id = (0, _Utils.guid)();
+
+	    if (options.width) {
+	      this.width = options.width;
+	    }
+
+	    if (options.height) {
+	      this.height = options.height;
+	    }
+
+	    this.uploadUrl = options.uploadUrl;
+	    this.fileInputName = options.fileInputName;
+	  }
+
+	  _createClass(FileUpload, [{
+	    key: 'render',
+	    value: function render(container) {
+	      var fileUploadContainer = $('<div></div>');
+	      fileUploadContainer.attr('id', this.id);
+	      fileUploadContainer.appendTo(container);
+
+	      var fileUploadOptions = {
+	        theme: 'metro'
+	      };
+
+	      if (this.width) {
+	        fileUploadOptions['width'] = this.width;
+	      } else {
+	        fileUploadOptions['width'] = 300;
+	      }
+
+	      if (this.height) {
+	        fileUploadOptions['height'] = this.height;
+	      }
+
+	      fileUploadOptions['uploadUrl'] = this.uploadUrl;
+	      fileUploadOptions['fileInputName'] = this.fileInputName;
+	      fileUploadOptions['multipleFilesUpload'] = false;
+	      fileUploadOptions['autoUpload'] = true;
+
+	      fileUploadContainer.jqxFileUpload(fileUploadOptions);
+
+	      this.component = fileUploadContainer;
+	    }
+	  }, {
+	    key: 'getId',
+	    value: function getId() {
+	      return this.id;
+	    }
+	  }, {
+	    key: 'upload',
+	    value: function upload() {
+	      return this.component.jqxFileUpload('uploadAll');
+	    }
+	  }]);
+
+	  return FileUpload;
+	}();
+
+	exports.default = FileUpload;
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Tabs = __webpack_require__(7);
+
+	var _Tabs2 = _interopRequireDefault(_Tabs);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _ViewWindow = __webpack_require__(64);
+
+	var _ViewWindow2 = _interopRequireDefault(_ViewWindow);
+
+	var _StudentForm = __webpack_require__(50);
+
+	var _StudentForm2 = _interopRequireDefault(_StudentForm);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ViewImageWindow = function () {
+	  function ViewImageWindow(options) {
+	    _classCallCheck(this, ViewImageWindow);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    var url = options.url;
+
+	    var imageView = {
+	      render: function render(container) {
+	        var image = $('<img src="' + url + '" style="height: 520px; width: 100%;"/>');
+	        image.appendTo(container);
+	      }
+	    };
+
+	    this.window = new _ViewWindow2.default({
+	      width: 550,
+	      height: 700,
+	      title: 'Image',
+	      content: imageView,
+	      onCancel: function onCancel() {
+	        _this.window.close();
+	      }
+	    });
+	  }
+
+	  _createClass(ViewImageWindow, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+	      this.window.render(container);
+	    }
+	  }, {
+	    key: 'open',
+	    value: function open() {
+	      this.window.open();
+	    }
+	  }]);
+
+	  return ViewImageWindow;
+	}();
+
+	exports.default = ViewImageWindow;
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ViewWindow = function () {
+	  function ViewWindow(options) {
+	    _classCallCheck(this, ViewWindow);
+
+	    this.id = (0, _Utils.guid)();
+	    this.content = options.content;
+
+	    if (options.title) {
+	      this.title = options.title;
+	    } else {
+	      this.title = '';
+	    }
+
+	    if (options.width) {
+	      this.width = options.width;
+	    }
+
+	    if (options.height) {
+	      this.height = options.height;
+	    }
+
+	    if (options.buttons) {} else {
+	      this.cancelButton = new _Button2.default({
+	        title: 'Close',
+	        onClick: function onClick() {
+	          if (options.onCancel) {
+	            options.onCancel();
+	          }
+	        }
+	      });
+	    }
+	  }
+
+	  _createClass(ViewWindow, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+
+	      var windowContainer = $('<div></div>');
+	      windowContainer.appendTo(container);
+
+	      windowContainer.attr('id', this.id);
+
+	      var windowTitle = $('<div>' + this.title + '</div>');
+	      windowTitle.appendTo(windowContainer);
+
+	      var windowContent = $('<div></div>');
+	      windowContent.appendTo(windowContainer);
+
+	      var windowOptions = {
+	        theme: 'metro',
+	        isModal: true,
+	        autoOpen: false
+	      };
+
+	      if (this.width) {
+	        windowOptions['width'] = this.width;
+	      }
+
+	      if (this.height) {
+	        windowOptions['height'] = this.height;
+	      }
+
+	      windowContainer.jqxWindow(windowOptions);
+
+	      windowContainer.on('close', function (event) {
+	        windowContainer.jqxWindow('destroy');
+	      });
+
+	      var table = $('<table style="height: 100%; width: 100%;"></table>');
+	      var tr = $('<tr></tr>');
+	      var td = $('<td></td>');
+	      table.appendTo(windowContent);
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+	      this.content.render(td);
+
+	      tr = $('<tr></tr>');
+	      td = $('<td></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      var innerTable = $('<table style="height: 100%; width: 100%;"></table>');
+	      var innerTr = $('<tr></tr>');
+	      var innerTd = $('<td style="width: 90%;"></td>');
+	      innerTable.appendTo(td);
+	      innerTr.appendTo(innerTable);
+	      innerTd.appendTo(innerTr);
+
+	      innerTd = $('<td></td>');
+	      innerTd.appendTo(innerTr);
+	      this.cancelButton.render(innerTd);
+
+	      innerTd = $('<td></td>');
+	      innerTd.appendTo(innerTr);
+	      // this.saveButton.render(innerTd);
+
+	      this.windowContainer = windowContainer;
+	    }
+	  }, {
+	    key: 'getId',
+	    value: function getId() {
+	      return this.id;
+	    }
+	  }, {
+	    key: 'open',
+	    value: function open() {
+	      this.windowContainer.jqxWindow('open');
+	    }
+	  }, {
+	    key: 'close',
+	    value: function close() {
+	      this.windowContainer.jqxWindow('close');
+	    }
+	  }, {
+	    key: 'destroy',
+	    value: function destroy() {
+	      this.windowContainer.jqxWindow('destroy');
+	    }
+	  }]);
+
+	  return ViewWindow;
+	}();
+
+	exports.default = ViewWindow;
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
 	var _Form = __webpack_require__(16);
 
 	var _Form2 = _interopRequireDefault(_Form);
@@ -7472,7 +8048,7 @@
 	exports.default = Permissionlnfo;
 
 /***/ },
-/* 61 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7614,350 +8190,6 @@
 	}();
 
 	exports.default = Leavelnfo;
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Utils = __webpack_require__(3);
-
-	var _Button = __webpack_require__(8);
-
-	var _Button2 = _interopRequireDefault(_Button);
-
-	var _AddWindow = __webpack_require__(17);
-
-	var _AddWindow2 = _interopRequireDefault(_AddWindow);
-
-	var _EditMedicalInfoForm = __webpack_require__(63);
-
-	var _EditMedicalInfoForm2 = _interopRequireDefault(_EditMedicalInfoForm);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var EditMedicalInfoWindow = function () {
-	  function EditMedicalInfoWindow(options) {
-	    _classCallCheck(this, EditMedicalInfoWindow);
-
-	    var _this = this;
-
-	    this.id = (0, _Utils.guid)();
-
-	    this.onSaveSuccess = options.onSaveSuccess;
-
-	    var editMedicalInfoForm = new _EditMedicalInfoForm2.default({
-	      medicalInfo: options.medicalInfo
-	    });
-
-	    this.window = new _AddWindow2.default({
-	      width: 390,
-	      height: 430,
-	      title: 'Edit Surat Sakit',
-	      content: editMedicalInfoForm,
-	      onSave: function onSave() {
-	        editMedicalInfoForm.validate();
-	      },
-	      onCancel: function onCancel() {
-	        _this.window.close();
-	      }
-	    });
-	  }
-
-	  _createClass(EditMedicalInfoWindow, [{
-	    key: 'render',
-	    value: function render(container) {
-
-	      var _this = this;
-	      this.window.render(container);
-	    }
-	  }, {
-	    key: 'open',
-	    value: function open() {
-	      this.window.open();
-	    }
-	  }]);
-
-	  return EditMedicalInfoWindow;
-	}();
-
-	exports.default = EditMedicalInfoWindow;
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Utils = __webpack_require__(3);
-
-	var _Button = __webpack_require__(8);
-
-	var _Button2 = _interopRequireDefault(_Button);
-
-	var _Form = __webpack_require__(16);
-
-	var _Form2 = _interopRequireDefault(_Form);
-
-	var _AddWindow = __webpack_require__(17);
-
-	var _AddWindow2 = _interopRequireDefault(_AddWindow);
-
-	var _TextBox = __webpack_require__(11);
-
-	var _TextBox2 = _interopRequireDefault(_TextBox);
-
-	var _DateInput = __webpack_require__(59);
-
-	var _DateInput2 = _interopRequireDefault(_DateInput);
-
-	var _TextArea = __webpack_require__(55);
-
-	var _TextArea2 = _interopRequireDefault(_TextArea);
-
-	var _NumberInput = __webpack_require__(30);
-
-	var _NumberInput2 = _interopRequireDefault(_NumberInput);
-
-	var _FileUpload = __webpack_require__(64);
-
-	var _FileUpload2 = _interopRequireDefault(_FileUpload);
-
-	var _Label = __webpack_require__(29);
-
-	var _Label2 = _interopRequireDefault(_Label);
-
-	var _DivisionComboBox = __webpack_require__(26);
-
-	var _DivisionComboBox2 = _interopRequireDefault(_DivisionComboBox);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var EditMedicalInfoForm = function () {
-	  function EditMedicalInfoForm(options) {
-	    _classCallCheck(this, EditMedicalInfoForm);
-
-	    this.id = (0, _Utils.guid)();
-
-	    this.medicalInfo = options.medicalInfo;
-	    this.onSaveSuccess = options.onSaveSuccess;
-
-	    var tanggalDateInput = new _DateInput2.default({ height: 25, width: '90%' });
-	    var descriptionTextArea = new _TextArea2.default({ height: 80, width: '90%', placeHolder: '' });
-	    var jumlahHariNumberInput = new _NumberInput2.default({
-	      value: 1, width: '90%', height: 25,
-	      basicProperties: {
-	        min: 1,
-	        max: 31,
-	        decimalDigits: 0,
-	        digits: 2,
-	        spinButtons: true
-	      }
-	    });
-	    var divisionComboBox = new _DivisionComboBox2.default({ value: 1 });
-
-	    this.fileUpload = new _FileUpload2.default({
-	      width: 220,
-	      uploadUrl: 'medicalinfo_upload/' + this.medicalInfo.id,
-	      fileInputName: 'theFile'
-	    });
-
-	    var formItems = [{
-	      name: 'tanggal',
-	      label: 'Tanggal',
-	      content: tanggalDateInput
-	    }, {
-	      name: 'keterangan',
-	      label: 'Keterangan',
-	      content: descriptionTextArea
-	    }, {
-	      name: 'jumlah_hari',
-	      label: 'Jumlah Hari',
-	      content: jumlahHariNumberInput
-	    }, {
-	      name: 'bagian',
-	      label: 'Bagian',
-	      content: divisionComboBox,
-	      validation: {
-	        type: 'COMBOBOX',
-	        rule: 'required'
-	      }
-	    }];
-	    var formOptions = {
-	      items: formItems,
-	      labelColumnWidth: '120px',
-	      onValidationSuccess: function onValidationSuccess(formValue) {
-	        $.ajax({
-	          method: "POST",
-	          url: "/medicalinfo",
-	          data: formValue
-	        }).done(function () {
-	          $("#successNotification").jqxNotification("open");
-	          _this.window.close();
-	          if (_this.onSaveSuccess) {
-	            _this.onSaveSuccess();
-	          }
-	        }).fail(function (jqXHR, textStatus, errorThrown) {
-	          var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
-	          $("#errorNotification").html('<div>' + errorMessage + '</div>');
-	          $("#errorNotification").jqxNotification("open");
-	        });
-	      }
-	    };
-
-	    this.form = new _Form2.default(formOptions);
-	  }
-
-	  _createClass(EditMedicalInfoForm, [{
-	    key: 'render',
-	    value: function render(container) {
-
-	      var table = $('<table style="height: 70%; width: 100%; "></table>');
-	      var tr = $('<tr></tr>');
-	      var td = $('<td style="padding: 0; height: 40px;"></td>');
-	      table.appendTo(container);
-	      tr.appendTo(table);
-	      td.appendTo(tr);
-
-	      this.form.render(td);
-
-	      tr = $('<tr></tr>');
-	      td = $('<td style="padding-left: 125px; height: 30px;"></td>');
-	      tr.appendTo(table);
-	      td.appendTo(tr);
-	      this.fileUpload.render(td);
-
-	      var viewImage = new _Button2.default({
-	        title: 'View Image',
-	        template: 'primary',
-	        height: 26,
-	        onClick: function onClick() {
-	          // var addMedicalInfoWindow = new AddMedicalInfoWindow({
-	          //   riwayatMppdId: _this.riwayatMppdId,
-	          //   bagianId: _this.bagianId,
-	          //   onSaveSuccess: function(){
-	          //     _this.dataGrid.refresh();
-	          //   }
-	          // });
-	          // addMedicalInfoWindow.render($('#dialogWindowContainer'));
-	          // addMedicalInfoWindow.open();
-	        }
-	      });
-
-	      tr = $('<tr></tr>');
-	      td = $('<td style="padding-left: 125px; height: 30px;"></td>');
-	      tr.appendTo(table);
-	      td.appendTo(tr);
-
-	      viewImage.render(td);
-	    }
-	  }]);
-
-	  return EditMedicalInfoForm;
-	}();
-
-	exports.default = EditMedicalInfoForm;
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Utils = __webpack_require__(3);
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	//DON'T PUT THIS IN <form></form> TAG
-	//THIS IS NOT PART OF FORM!!!!!
-
-	var FileUpload = function () {
-	  function FileUpload(options) {
-	    _classCallCheck(this, FileUpload);
-
-	    this.id = (0, _Utils.guid)();
-
-	    if (options.width) {
-	      this.width = options.width;
-	    }
-
-	    if (options.height) {
-	      this.height = options.height;
-	    }
-
-	    this.uploadUrl = options.uploadUrl;
-	    this.fileInputName = options.fileInputName;
-	  }
-
-	  _createClass(FileUpload, [{
-	    key: 'render',
-	    value: function render(container) {
-	      var fileUploadContainer = $('<div></div>');
-	      fileUploadContainer.attr('id', this.id);
-	      fileUploadContainer.appendTo(container);
-
-	      var fileUploadOptions = {
-	        theme: 'metro'
-	      };
-
-	      if (this.width) {
-	        fileUploadOptions['width'] = this.width;
-	      } else {
-	        fileUploadOptions['width'] = 300;
-	      }
-
-	      if (this.height) {
-	        fileUploadOptions['height'] = this.height;
-	      }
-
-	      fileUploadOptions['uploadUrl'] = this.uploadUrl;
-	      fileUploadOptions['fileInputName'] = this.fileInputName;
-	      fileUploadOptions['multipleFilesUpload'] = false;
-	      fileUploadOptions['autoUpload'] = true;
-
-	      fileUploadContainer.jqxFileUpload(fileUploadOptions);
-
-	      this.component = fileUploadContainer;
-	    }
-	  }, {
-	    key: 'getId',
-	    value: function getId() {
-	      return this.id;
-	    }
-	  }, {
-	    key: 'upload',
-	    value: function upload() {
-	      return this.component.jqxFileUpload('uploadAll');
-	    }
-	  }]);
-
-	  return FileUpload;
-	}();
-
-	exports.default = FileUpload;
 
 /***/ }
 /******/ ]);
