@@ -133,3 +133,37 @@ exports.medicalInfoViewImage = function (req, res, db) {
     );
 
 };
+
+exports.updateMedicalInfo = function(req, res, db) {
+
+  var medicalInfoId = req.params.medicalInfoId;
+
+  var medicalInfo = {
+    tangal: new Date(req.body.tanggal),
+    keterangan: req.body.keterangan,
+    jumlah_hari: req.body.jumlah_hari,
+    bagian_id: req.body.bagian
+  };
+
+  db.query(
+  'UPDATE tb_surat_sakit SET tanggal = ? ,'+
+  'keterangan = ? ,' +
+  'jumlah_hari = ? ,' +
+  'bagian_id = ? ' +
+  'WHERE id = ?',
+  [
+    medicalInfo.tangal,
+    medicalInfo.keterangan,
+    medicalInfo.jumlah_hari,
+    medicalInfo.bagian_id,
+    medicalInfoId
+  ],
+  function (err, result) {
+    if(err){
+      console.log(err);
+      res.status(500).send('Error while doing operation.');
+    }else{
+      res.json({status: 'UPDATE_SUCCESS'});
+    }
+  });
+};

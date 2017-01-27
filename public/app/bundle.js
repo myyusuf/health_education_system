@@ -7368,7 +7368,13 @@
 	    this.onSaveSuccess = options.onSaveSuccess;
 
 	    var editMedicalInfoForm = new _EditMedicalInfoForm2.default({
-	      medicalInfo: options.medicalInfo
+	      medicalInfo: options.medicalInfo,
+	      onSaveSuccess: function onSaveSuccess() {
+	        _this.window.close();
+	        if (_this.onSaveSuccess) {
+	          _this.onSaveSuccess();
+	        }
+	      }
 	    });
 
 	    this.window = new _AddWindow2.default({
@@ -7470,15 +7476,17 @@
 	  function EditMedicalInfoForm(options) {
 	    _classCallCheck(this, EditMedicalInfoForm);
 
+	    var _this = this;
+
 	    this.id = (0, _Utils.guid)();
 
 	    this.medicalInfo = options.medicalInfo;
 	    this.onSaveSuccess = options.onSaveSuccess;
 
-	    var tanggalDateInput = new _DateInput2.default({ height: 25, width: '90%' });
-	    var descriptionTextArea = new _TextArea2.default({ height: 80, width: '90%', placeHolder: '' });
+	    var tanggalDateInput = new _DateInput2.default({ value: _this.medicalInfo.tanngal, height: 25, width: '90%' });
+	    var descriptionTextArea = new _TextArea2.default({ value: _this.medicalInfo.keterangan, height: 80, width: '90%', placeHolder: '' });
 	    var jumlahHariNumberInput = new _NumberInput2.default({
-	      value: 1, width: '90%', height: 25,
+	      value: _this.medicalInfo.jumlah_hari, width: '90%', height: 25,
 	      basicProperties: {
 	        min: 1,
 	        max: 31,
@@ -7487,7 +7495,7 @@
 	        spinButtons: true
 	      }
 	    });
-	    var divisionComboBox = new _DivisionComboBox2.default({ value: 1 });
+	    var divisionComboBox = new _DivisionComboBox2.default({ value: _this.medicalInfo.bagian_id });
 
 	    this.fileUpload = new _FileUpload2.default({
 	      width: 220,
@@ -7521,12 +7529,12 @@
 	      labelColumnWidth: '120px',
 	      onValidationSuccess: function onValidationSuccess(formValue) {
 	        $.ajax({
-	          method: "POST",
-	          url: "/medicalinfo",
+	          method: "PUT",
+	          url: "/medicalinfo/" + _this.medicalInfo.id,
 	          data: formValue
 	        }).done(function () {
 	          $("#successNotification").jqxNotification("open");
-	          _this.window.close();
+
 	          if (_this.onSaveSuccess) {
 	            _this.onSaveSuccess();
 	          }
@@ -7567,8 +7575,9 @@
 	        template: 'primary',
 	        height: 26,
 	        onClick: function onClick() {
+
 	          var viewImageWindow = new _ViewImageWindow2.default({
-	            url: 'medicalinfo_image/' + _this.medicalInfo.id
+	            url: 'medicalinfo_image/' + _this.medicalInfo.id + "?" + (0, _Utils.guid)()
 	          });
 	          viewImageWindow.render($('#dialogWindowContainer'));
 	          viewImageWindow.open();
@@ -7581,6 +7590,11 @@
 	      td.appendTo(tr);
 
 	      viewImage.render(td);
+	    }
+	  }, {
+	    key: 'validate',
+	    value: function validate() {
+	      this.form.validate();
 	    }
 	  }]);
 
@@ -7719,7 +7733,7 @@
 
 	    var imageView = {
 	      render: function render(container) {
-	        var image = $('<img src="' + url + '" style="height: 520px; width: 100%;"/>');
+	        var image = $('<img src="' + url + '" style=""/>');
 	        image.appendTo(container);
 	      }
 	    };

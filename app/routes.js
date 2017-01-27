@@ -244,6 +244,10 @@ module.exports = function(app, passport, db) {
   app.get('/medicalinfo_image/:medicalInfoId', function(req, res) {
     studentMppd.medicalInfoViewImage(req, res, db);
   });
+
+  app.put('/medicalinfo/:medicalInfoId', function(req, res) {
+    studentMppd.updateMedicalInfo(req, res, db);
+  });
 };
 
 // route middleware to make sure
