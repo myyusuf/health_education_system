@@ -6650,6 +6650,8 @@
 	  function ProblemInfo(options) {
 	    _classCallCheck(this, ProblemInfo);
 
+	    var _this = this;
+
 	    this.id = (0, _Utils.guid)();
 
 	    this.riwayatMppdId = options.riwayatMppdId;
@@ -6765,6 +6767,10 @@
 	      items: formItems,
 	      labelColumnWidth: '40px',
 	      onValidationSuccess: function onValidationSuccess(formValue) {
+
+	        formValue['riwayat_mppd_id'] = _this.riwayatMppdId;
+	        formValue['bagian_id'] = _this.bagianId;
+
 	        $.ajax({
 	          method: "POST",
 	          url: "/probleminfo",
@@ -6794,13 +6800,10 @@
 	  }, {
 	    key: 'changeDivision',
 	    value: function changeDivision(bagianId) {
-	      this.bagianId = bagianId;
-	    }
-	  }, {
-	    key: 'changeDivision',
-	    value: function changeDivision(bagianId) {
 
 	      var _this = this;
+
+	      this.bagianId = bagianId;
 
 	      var url = 'probleminfo/' + this.riwayatMppdId;
 
