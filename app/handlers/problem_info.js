@@ -3,17 +3,17 @@ exports.add = function(req, res, db) {
   var problemInfo = {
     riwayat_mppd_id: req.body.riwayat_mppd_id,
     bagian_id: req.body.bagian_id,
-    masalah1: req.body.masalah1 ? 1 : 0,
-    masalah2: req.body.masalah2 ? 1 : 0,
-    masalah3: req.body.masalah3 ? 1 : 0,
-    masalah4: req.body.masalah4 ? 1 : 0,
-    masalah5: req.body.masalah5 ? 1 : 0,
-    masalah6: req.body.masalah6 ? 1 : 0,
-    masalah7: req.body.masalah7 ? 1 : 0,
-    masalah8: req.body.masalah8 ? 1 : 0,
-    masalah9: req.body.masalah9 ? 1 : 0,
-    masalah10: req.body.masalah10 ? 1 : 0,
-    masalah11: req.body.masalah11 ? 1 : 0,
+    masalah1: (req.body.masalah1  == 'true') ? 1 : 0,
+    masalah2: (req.body.masalah2  == 'true') ? 1 : 0,
+    masalah3: (req.body.masalah3  == 'true') ? 1 : 0,
+    masalah4: (req.body.masalah4  == 'true') ? 1 : 0,
+    masalah5: (req.body.masalah5  == 'true') ? 1 : 0,
+    masalah6: (req.body.masalah6  == 'true')? 1 : 0,
+    masalah7: (req.body.masalah7  == 'true') ? 1 : 0,
+    masalah8: (req.body.masalah8  == 'true') ? 1 : 0,
+    masalah9: (req.body.masalah9  == 'true') ? 1 : 0,
+    masalah10: (req.body.masalah10  == 'true') ? 1 : 0,
+    masalah11: (req.body.masalah11  == 'true') ? 1 : 0,
     jumlah_hari_post_test: req.body.jumlah_hari_post_test,
     keterangan: req.body.keterangan
   };
@@ -28,7 +28,7 @@ exports.add = function(req, res, db) {
       function(err, rows) {
         if (err) throw err;
 
-        if(rows>0){
+        if(rows.length > 0){
           db.query(
           'UPDATE tb_masalah SET masalah1 = ? ,'+
           'masalah2 = ? ,' +

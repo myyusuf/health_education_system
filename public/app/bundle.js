@@ -6777,7 +6777,7 @@
 	          data: formValue
 	        }).done(function () {
 	          $("#successNotification").jqxNotification("open");
-	          _this.window.close();
+
 	          if (_this.onSaveSuccess) {
 	            _this.onSaveSuccess();
 	          }
