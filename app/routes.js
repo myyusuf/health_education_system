@@ -13,6 +13,7 @@ var divisionData = require('./handlers/division_data.js');
 var hospitalData = require('./handlers/hospital_data.js');
 var reportingData = require('./handlers/reporting_data.js');
 var studentMppd = require('./handlers/student_mppd.js');
+var problemInfo = require('./handlers/problem_info.js');
 
 module.exports = function(app, passport, db) {
 
@@ -251,6 +252,10 @@ module.exports = function(app, passport, db) {
 
   app.delete('/medicalinfo/:medicalInfoId', function(req, res) {
     studentMppd.deleteMedicalInfo(req, res, db);
+  });
+
+  app.post('/probleminfo', function(req, res) {
+    problemInfo.add(req, res, db);
   });
 };
 

@@ -6148,7 +6148,7 @@
 	      title: 'Riwayat MPPD',
 	      content: studentForm,
 	      onSave: function onSave() {
-	        form.validate();
+	        studentForm.validate();
 	      },
 	      onCancel: function onCancel() {
 	        _this.window.close();
@@ -6232,16 +6232,22 @@
 	      student: { nama: 'marliyanti' },
 	      onDivisionChange: function onDivisionChange(value) {
 	        _this.medicalInfo.changeDivision(value);
+	        _this.problemInfo.changeDivision(value);
 	      }
 	    });
-	    this.scoreInfo = new _ScoreInfo2.default({});
-	    this.problemInfo = new _ProblemInfo2.default({});
+	    this.scoreInfo = new _ScoreInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
+	    this.problemInfo = new _ProblemInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
 	    this.medicalInfo = new _MedicalInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
-	    this.permissionInfo = new _PermissionInfo2.default({});
-	    this.leaveInfo = new _LeaveInfo2.default({});
+	    this.permissionInfo = new _PermissionInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
+	    this.leaveInfo = new _LeaveInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
 	  }
 
 	  _createClass(StudentForm, [{
+	    key: 'validate',
+	    value: function validate() {
+	      this.problemInfo.validate();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render(container) {
 
@@ -6636,6 +6642,8 @@
 
 	    this.id = (0, _Utils.guid)();
 
+	    this.onSaveSuccess = options.onSaveSuccess;
+
 	    var checkBox1 = new _CheckBox2.default({ height: 25, width: '100%',
 	      label: 'Terlambat baca referat karena alasan pembimbing' });
 	    var checkBox2 = new _CheckBox2.default({ height: 25, width: '100%',
@@ -6675,55 +6683,55 @@
 	    });
 
 	    var formItems = [{
-	      name: 'checkBox1',
+	      name: 'masalah1',
 	      label: '',
 	      content: checkBox1
 	    }, {
-	      name: 'checkBox2',
+	      name: 'masalah2',
 	      label: '',
 	      content: checkBox2
 	    }, {
-	      name: 'checkBox3',
+	      name: 'masalah3',
 	      label: '',
 	      content: checkBox3
 	    }, {
-	      name: 'checkBox4',
+	      name: 'masalah4',
 	      label: '',
 	      content: checkBox4
 	    }, {
-	      name: 'checkBox5',
+	      name: 'masalah5',
 	      label: '',
 	      content: checkBox5
 	    }, {
-	      name: 'checkBox6',
+	      name: 'masalah6',
 	      label: '',
 	      content: checkBox6
 	    }, {
-	      name: 'checkBox7',
+	      name: 'masalah7',
 	      label: '',
 	      content: checkBox7
 	    }, {
-	      name: 'checkBox8',
+	      name: 'masalah8',
 	      label: '',
 	      content: checkBox8
 	    }, {
-	      name: 'checkBox9',
+	      name: 'masalah9',
 	      label: '',
 	      content: checkBox9
 	    }, {
-	      name: 'postTestCount',
+	      name: 'jumlah_hari_post_test',
 	      label: '',
 	      content: postTestCountNumberInput
 	    }, {
-	      name: 'checkBox10',
+	      name: 'masalah10',
 	      label: '',
 	      content: checkBox10
 	    }, {
-	      name: 'checkBox11',
+	      name: 'masalah11',
 	      label: '',
 	      content: checkBox11
 	    }, {
-	      name: 'description',
+	      name: 'keterangan',
 	      label: '',
 	      content: descriptionTextArea
 	    }];
@@ -6733,7 +6741,7 @@
 	      onValidationSuccess: function onValidationSuccess(formValue) {
 	        $.ajax({
 	          method: "POST",
-	          url: "/students",
+	          url: "/probleminfo",
 	          data: formValue
 	        }).done(function () {
 	          $("#successNotification").jqxNotification("open");
@@ -6756,6 +6764,16 @@
 	    key: 'render',
 	    value: function render(container) {
 	      this.form.render(container);
+	    }
+	  }, {
+	    key: 'changeDivision',
+	    value: function changeDivision(bagianId) {
+	      this.bagianId = bagianId;
+	    }
+	  }, {
+	    key: 'validate',
+	    value: function validate() {
+	      this.form.validate();
 	    }
 	  }]);
 
