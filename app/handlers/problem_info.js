@@ -29,3 +29,23 @@ exports.add = function(req, res, db) {
   //
   // });
 };
+
+exports.getByMppdId = function(req, res, db) {
+
+  var riwayatMppdId = req.params.riwayatMppdId;
+  var bagianId = parseInt(req.param('bagian'));
+
+  var query = "SELECT m.*, b.id AS bagian_id, b.code AS bagian_code, b.nama AS bagian_nama " +
+  "FROM tb_masalah m " +
+  "LEFT JOIN tb_bagian b ON m.bagian_id = b.id " +
+  "WHERE m.riwayat_mppd_id = ? AND b.id = ? ";
+
+  db.query(
+    query, [riwayatMppdId, bagianId],
+    function(err, rows) {
+      if (err) throw err;
+      res.json(rows);
+    }
+  );
+
+};

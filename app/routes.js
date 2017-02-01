@@ -257,6 +257,10 @@ module.exports = function(app, passport, db) {
   app.post('/probleminfo', function(req, res) {
     problemInfo.add(req, res, db);
   });
+
+  app.get('/probleminfo/:riwayatMppdId', function(req, res) {
+    problemInfo.getByMppdId(req, res, db);
+  });
 };
 
 // route middleware to make sure
