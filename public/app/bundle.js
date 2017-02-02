@@ -3612,6 +3612,7 @@
 	    this.id = (0, _Utils.guid)();
 	    this.text = options.text;
 	    this.bold = options.bold;
+	    this.color = options.color;
 	  }
 
 	  _createClass(Label, [{
@@ -3624,6 +3625,10 @@
 	      labelContainer.appendTo(container);
 	      if (this.bold) {
 	        labelContainer.css('font-weight', 'bold');
+	      }
+
+	      if (this.color) {
+	        labelContainer.css('color', this.color);
 	      }
 	    }
 	  }, {
@@ -6017,7 +6022,7 @@
 
 	      var source = {
 	        datatype: "json",
-	        datafields: [{ name: 'id', type: 'int' }, { name: 'siswa_id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'status', type: 'string' }],
+	        datafields: [{ name: 'id', type: 'int' }, { name: 'siswa_id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'status', type: 'string' }, { name: 'bagian_bermasalah', type: 'string' }],
 	        id: "id",
 	        url: url
 	      };
@@ -6037,7 +6042,7 @@
 	        rendergridrows: function rendergridrows(params) {
 	          return params.data;
 	        },
-	        columns: [{ text: 'Stambuk Lama', datafield: 'stambuk_lama', width: '25%' }, { text: 'Stambuk Baru', datafield: 'stambuk_baru', width: '25%' }, { text: 'Nama', datafield: 'nama', width: '25%' }, { text: 'Status', datafield: 'status', width: '25%' }],
+	        columns: [{ text: 'Stambuk Lama', datafield: 'stambuk_lama', width: '15%' }, { text: 'Stambuk Baru', datafield: 'stambuk_baru', width: '15%' }, { text: 'Nama', datafield: 'nama', width: '20%' }, { text: 'Status', datafield: 'status', width: '10%' }, { text: 'Bagian Bermasalah', datafield: 'bagian_bermasalah', width: '40%' }],
 	        groups: []
 	      };
 
@@ -6164,10 +6169,12 @@
 
 	    var studentForm = new _StudentForm2.default({ riwayatMppd: riwayatMppd });
 
+	    var title = '<b>Riwayat MPPD : ' + riwayatMppd.nama + ' [ ' + riwayatMppd.stambuk_lama + ' - ' + riwayatMppd.stambuk_baru + ' ]</b>';
+
 	    this.window = new _AddWindow2.default({
 	      width: 550,
 	      height: 700,
-	      title: 'Riwayat MPPD',
+	      title: title,
 	      content: studentForm,
 	      onSave: function onSave() {
 	        studentForm.validate();
@@ -6255,11 +6262,7 @@
 	    this.id = (0, _Utils.guid)();
 	    this.riwayatMppd = options.riwayatMppd;
 	    this.studentInfo = new _StudentInfo2.default({
-	      student: {
-	        nama: options.riwayatMppd.nama,
-	        stambuk_lama: options.riwayatMppd.stambuk_lama,
-	        stambuk_baru: options.riwayatMppd.stambuk_baru
-	      },
+	      riwayatMppd: this.riwayatMppd,
 	      onDivisionChange: function onDivisionChange(value) {
 	        _this.medicalInfo.changeDivision(value);
 	        _this.problemInfo.changeDivision(value);
@@ -6365,7 +6368,7 @@
 	    _classCallCheck(this, StudentInfo);
 
 	    this.id = (0, _Utils.guid)();
-	    this.student = options.student;
+	    this.riwayatMppd = options.riwayatMppd;
 	    this.onDivisionChange = options.onDivisionChange;
 	  }
 
@@ -6375,8 +6378,8 @@
 
 	      var _this = this;
 
-	      var nameStr = this.student.nama + ' [ ' + this.student.stambuk_lama + ' - ' + this.student.stambuk_baru + ' ]';
-	      var nameLabel = new _Label2.default({ text: nameStr, bold: true });
+	      var bagianBermasalah = this.riwayatMppd.bagian_bermasalah;
+	      var nameLabel = new _Label2.default({ text: bagianBermasalah, color: 'red', bold: true });
 	      var divisionComboBox = new _DivisionComboBox2.default({
 	        onChange: _this.onDivisionChange
 	      });

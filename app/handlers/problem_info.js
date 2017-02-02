@@ -100,29 +100,41 @@ exports.add = function(req, res, db) {
   }
 
   var updateMppdStatus = function(problemInfo, callback){
-    var query = "SELECT count(1) AS totalRecords FROM tb_masalah WHERE " +
+    var query = "SELECT m.*, b.nama AS nama_bagian FROM tb_masalah m LEFT JOIN tb_bagian b " +
+    "ON m.bagian_id = b.id " +
+    "WHERE " +
     "((masalah1 = 1) OR (masalah2 = 1) OR (masalah3 = 1) OR (masalah4 = 1) OR (masalah5 = 1) OR " +
     "(masalah6 = 1) OR (masalah7 = 1) OR (masalah8 = 1) OR (masalah9 = 1) OR (masalah10 = 1) OR " +
     "(masalah11 = 1)) " +
     "AND " +
-    "riwayat_mppd_id = ? AND bagian_id = ? ";
+    "m.riwayat_mppd_id = ? ";
 
     db.query(
-      query, [problemInfo.riwayat_mppd_id, problemInfo.bagian_id],
+      query, [problemInfo.riwayat_mppd_id],
       function(err, rows) {
         if (err) throw err;
-        var totalRecords = rows[0].totalRecords;
 
         var status = "Lancar";
-        if(totalRecords > 0){
+        var bagianBermasalah = "";
+        if(rows.length > 0){
           status = "Bermasalah";
+
+          for(var i=0; i<rows.length; i++){
+            if(i == rows.length - 1){
+              bagianBermasalah += rows[i].nama_bagian;
+            }else{
+              bagianBermasalah += rows[i].nama_bagian + ", ";
+            }
+
+          }
         }
 
         db.query(
-        'UPDATE tb_riwayat_mppd SET status = ? '+
+        'UPDATE tb_riwayat_mppd SET status = ?, bagian_bermasalah = ? '+
         'WHERE id = ? ',
         [
           status,
+          bagianBermasalah,
           problemInfo.riwayat_mppd_id
         ],
         function (err, result) {
