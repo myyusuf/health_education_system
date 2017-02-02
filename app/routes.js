@@ -13,6 +13,7 @@ var divisionData = require('./handlers/division_data.js');
 var hospitalData = require('./handlers/hospital_data.js');
 var reportingData = require('./handlers/reporting_data.js');
 var studentMppd = require('./handlers/student_mppd.js');
+var medicalInfo = require('./handlers/medical_info.js');
 var problemInfo = require('./handlers/problem_info.js');
 var permissionInfo = require('./handlers/permission_info.js');
 
@@ -233,26 +234,26 @@ module.exports = function(app, passport, db) {
   });
 
   app.post('/medicalinfo', function(req, res) {
-    studentMppd.addMedicalInfo(req, res, db);
+    medicalInfo.add(req, res, db);
   });
   app.get('/medicalinfo/:riwayatMppdId', function(req, res) {
-    studentMppd.listMedicalInfo(req, res, db);
+    medicalInfo.list(req, res, db);
   });
 
   app.post('/medicalinfo_upload/:medicalInfoId', function(req, res) {
-    studentMppd.uploadMedicalInfo(req, res, db);
+    medicalInfo.upload(req, res, db);
   });
 
   app.get('/medicalinfo_image/:medicalInfoId', function(req, res) {
-    studentMppd.medicalInfoViewImage(req, res, db);
+    medicalInfo.viewImage(req, res, db);
   });
 
   app.put('/medicalinfo/:medicalInfoId', function(req, res) {
-    studentMppd.updateMedicalInfo(req, res, db);
+    medicalInfo.update(req, res, db);
   });
 
   app.delete('/medicalinfo/:medicalInfoId', function(req, res) {
-    studentMppd.deleteMedicalInfo(req, res, db);
+    medicalInfo.delete(req, res, db);
   });
 
   app.post('/probleminfo', function(req, res) {
