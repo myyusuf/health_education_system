@@ -1787,8 +1787,13 @@
 	        }
 	      });
 
+	      var cancelButtonTitle = 'Cancel';
+	      if (options.cancelButtonTitle) {
+	        cancelButtonTitle = options.cancelButtonTitle;
+	      }
+
 	      this.cancelButton = new _Button2.default({
-	        title: 'Cancel',
+	        title: cancelButtonTitle,
 	        onClick: function onClick() {
 	          if (options.onCancel) {
 	            options.onCancel();
@@ -6044,6 +6049,8 @@
 	            data: data,
 	            onSaveSuccess: function onSaveSuccess() {
 	              _this.dataGrid.refresh();
+	            }, onCancel: function onCancel() {
+	              _this.dataGrid.refresh();
 	            }
 	          });
 	          editRiwayatMPPDWindow.render($('#dialogWindowContainer'));
@@ -6153,6 +6160,7 @@
 
 	    var riwayatMppd = options.data;
 	    this.onSaveSuccess = options.onSaveSuccess;
+	    this.onCancel = options.onCancel;
 
 	    var studentForm = new _StudentForm2.default({ riwayatMppd: riwayatMppd });
 
@@ -6166,7 +6174,11 @@
 	      },
 	      onCancel: function onCancel() {
 	        _this.window.close();
-	      }
+	        if (_this.onCancel) {
+	          _this.onCancel();
+	        }
+	      },
+	      cancelButtonTitle: 'Close'
 	    });
 	  }
 
@@ -6243,7 +6255,11 @@
 	    this.id = (0, _Utils.guid)();
 	    this.riwayatMppd = options.riwayatMppd;
 	    this.studentInfo = new _StudentInfo2.default({
-	      student: { nama: 'marliyanti' },
+	      student: {
+	        nama: options.riwayatMppd.nama,
+	        stambuk_lama: options.riwayatMppd.stambuk_lama,
+	        stambuk_baru: options.riwayatMppd.stambuk_baru
+	      },
 	      onDivisionChange: function onDivisionChange(value) {
 	        _this.medicalInfo.changeDivision(value);
 	        _this.problemInfo.changeDivision(value);

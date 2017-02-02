@@ -87,7 +87,7 @@ exports.costUnit = function(req, res, db) {
 
 exports.riwayatMPPD = function(req, res, db) {
 
-  var query = "SELECT rm.*, s.id as student_id, s.stambuk_lama, s.stambuk_baru from tb_riwayat_mppd rm " +
+  var query = "SELECT rm.*, s.id as student_id, s.nama as nama, s.stambuk_lama, s.stambuk_baru from tb_riwayat_mppd rm " +
     "LEFT JOIN tb_siswa s ON rm.siswa_id = s.id " +
     "WHERE (s.stambuk_lama LIKE ? or s.stambuk_baru LIKE ? or s.nama LIKE ?) " +
     "order by s.nama " +
