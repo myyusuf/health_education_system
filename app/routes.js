@@ -14,6 +14,7 @@ var hospitalData = require('./handlers/hospital_data.js');
 var reportingData = require('./handlers/reporting_data.js');
 var studentMppd = require('./handlers/student_mppd.js');
 var problemInfo = require('./handlers/problem_info.js');
+var permissionInfo = require('./handlers/permission_info.js');
 
 module.exports = function(app, passport, db) {
 
@@ -265,6 +266,33 @@ module.exports = function(app, passport, db) {
   app.get('/scoreinfo/:studentId', function(req, res) {
     studentMppd.getScoreByStudentId(req, res, db);
   });
+
+  //--------------
+
+  app.post('/permissioninfo', function(req, res) {
+    permissionInfo.add(req, res, db);
+  });
+  app.get('/permissioninfo/:riwayatMppdId', function(req, res) {
+    permissionInfo.list(req, res, db);
+  });
+
+  app.post('/permissioninfo_upload/:permissionInfoId', function(req, res) {
+    permissionInfo.upload(req, res, db);
+  });
+
+  app.get('/permissioninfo_image/:permissionInfoId', function(req, res) {
+    permissionInfo.viewImage(req, res, db);
+  });
+
+  app.put('/permissioninfo/:permissionInfoId', function(req, res) {
+    permissionInfo.update(req, res, db);
+  });
+
+  app.delete('/permissioninfo/:permissionInfoId', function(req, res) {
+    permissionInfo.delete(req, res, db);
+  });
+
+  //--------------
 };
 
 // route middleware to make sure
