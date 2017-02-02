@@ -3153,6 +3153,10 @@
 
 	    this.id = (0, _Utils.guid)();
 
+	    if (options == undefined) {
+	      options = {};
+	    }
+
 	    var comboBoxOptions = {
 	      displayMember: "nama",
 	      valueMember: "id",
@@ -6003,7 +6007,7 @@
 
 	      var source = {
 	        datatype: "json",
-	        datafields: [{ name: 'id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'status', type: 'string' }],
+	        datafields: [{ name: 'id', type: 'int' }, { name: 'siswa_id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'status', type: 'string' }],
 	        id: "id",
 	        url: url
 	      };
@@ -6238,9 +6242,10 @@
 	      onDivisionChange: function onDivisionChange(value) {
 	        _this.medicalInfo.changeDivision(value);
 	        _this.problemInfo.changeDivision(value);
+	        _this.scoreInfo.changeDivision(value);
 	      }
 	    });
-	    this.scoreInfo = new _ScoreInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
+	    this.scoreInfo = new _ScoreInfo2.default({ siswaId: this.riwayatMppd.siswa_id });
 	    this.problemInfo = new _ProblemInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
 	    this.medicalInfo = new _MedicalInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
 	    this.permissionInfo = new _PermissionInfo2.default({ riwayatMppdId: this.riwayatMppd.id });
@@ -6425,6 +6430,7 @@
 
 	    this.id = (0, _Utils.guid)();
 
+	    this.siswaId = options.siswaId;
 	    var score = {};
 
 	    var preTestNumberInput = new _NumberInput2.default({ value: score.pre_test, width: '70%', height: 25 });
@@ -6436,6 +6442,8 @@
 	    var seminarNumberInput = new _NumberInput2.default({ value: score.seminar, width: '70%', height: 25 });
 	    var portofolioNumberInput = new _NumberInput2.default({ value: score.portofolio, width: '70%', height: 25 });
 	    var judulLaporanKasusTextBox = new _TextBox2.default({ value: score.judul_laporan_kasus, height: 25, width: '70%' });
+
+	    this.preTestNumberInput = preTestNumberInput;
 
 	    var formItems = [{
 	      name: 'pre_test',
@@ -6500,6 +6508,33 @@
 	  }
 
 	  _createClass(ScoreInfo, [{
+	    key: 'changeDivision',
+	    value: function changeDivision(bagianId) {
+
+	      var _this = this;
+
+	      this.bagianId = bagianId;
+
+	      var url = 'scoreinfo/' + this.siswaId;
+
+	      $.ajax({
+	        method: "GET",
+	        url: url,
+	        data: {
+	          bagian: bagianId
+	        }
+	      }).done(function (data) {
+
+	        if (data.length > 0) {
+	          _this.preTestNumberInput.setValue(data[0].pre_test);
+	        } else {
+	          _this.preTestNumberInput.setValue(0);
+	        }
+	      }).fail(function () {
+	        alert('Error while doing operation');
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render(container) {
 

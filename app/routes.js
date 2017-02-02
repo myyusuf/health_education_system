@@ -261,6 +261,10 @@ module.exports = function(app, passport, db) {
   app.get('/probleminfo/:riwayatMppdId', function(req, res) {
     problemInfo.getByMppdId(req, res, db);
   });
+
+  app.get('/scoreinfo/:studentId', function(req, res) {
+    studentMppd.getScoreByStudentId(req, res, db);
+  });
 };
 
 // route middleware to make sure
