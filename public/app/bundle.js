@@ -6242,7 +6242,7 @@
 
 	var _PermissionInfo2 = _interopRequireDefault(_PermissionInfo);
 
-	var _LeaveInfo = __webpack_require__(66);
+	var _LeaveInfo = __webpack_require__(70);
 
 	var _LeaveInfo2 = _interopRequireDefault(_LeaveInfo);
 
@@ -7111,7 +7111,7 @@
 	    var dataGridOptions = {
 	      width: '100%',
 	      height: '100%',
-	      pageable: true,
+	      pageable: false,
 	      altrows: true,
 	      theme: 'metro',
 	      virtualmode: true,
@@ -8161,11 +8161,11 @@
 
 	var _DataGrid2 = _interopRequireDefault(_DataGrid);
 
-	var _AddPermissionInfoWindow = __webpack_require__(67);
+	var _AddPermissionInfoWindow = __webpack_require__(66);
 
 	var _AddPermissionInfoWindow2 = _interopRequireDefault(_AddPermissionInfoWindow);
 
-	var _EditPermissionInfoWindow = __webpack_require__(69);
+	var _EditPermissionInfoWindow = __webpack_require__(68);
 
 	var _EditPermissionInfoWindow2 = _interopRequireDefault(_EditPermissionInfoWindow);
 
@@ -8196,7 +8196,7 @@
 	    var dataGridOptions = {
 	      width: '100%',
 	      height: '100%',
-	      pageable: true,
+	      pageable: false,
 	      altrows: true,
 	      theme: 'metro',
 	      virtualmode: true,
@@ -8303,150 +8303,6 @@
 
 	var _Utils = __webpack_require__(3);
 
-	var _Form = __webpack_require__(16);
-
-	var _Form2 = _interopRequireDefault(_Form);
-
-	var _Button = __webpack_require__(8);
-
-	var _Button2 = _interopRequireDefault(_Button);
-
-	var _NumberInput = __webpack_require__(30);
-
-	var _NumberInput2 = _interopRequireDefault(_NumberInput);
-
-	var _CheckBox = __webpack_require__(53);
-
-	var _CheckBox2 = _interopRequireDefault(_CheckBox);
-
-	var _Label = __webpack_require__(29);
-
-	var _Label2 = _interopRequireDefault(_Label);
-
-	var _DataGrid = __webpack_require__(25);
-
-	var _DataGrid2 = _interopRequireDefault(_DataGrid);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Leavelnfo = function () {
-	  function Leavelnfo(options) {
-	    _classCallCheck(this, Leavelnfo);
-
-	    this.id = (0, _Utils.guid)();
-
-	    var _this = this;
-
-	    var url = "/students";
-
-	    var source = {
-	      datatype: "json",
-	      datafields: [{ name: 'id', type: 'int' }, { name: 'medical_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'description', type: 'string' }, { name: 'level', type: 'string' }],
-	      id: "id",
-	      url: url
-	    };
-
-	    var dataGridOptions = {
-	      width: '100%',
-	      height: '100%',
-	      pageable: true,
-	      altrows: true,
-	      theme: 'metro',
-	      virtualmode: true,
-	      rendergridrows: function rendergridrows(params) {
-	        return params.data;
-	      },
-	      columns: [{ text: 'Tanggal', datafield: 'medical_date', width: '33.33%' }, { text: 'Keterangan', datafield: 'description', width: '33.33%' }, { text: 'Tingkat', datafield: 'level', width: '33.33%' }],
-	      groups: []
-	    };
-
-	    var onSearch = function onSearch(data) {
-	      // data['searchTxt'] = searchTextBox.getValue();
-	      // data['level'] = levelComboBox.getValue();
-	      return data;
-	    };
-
-	    this.dataGrid = new _DataGrid2.default({
-	      source: source,
-	      onSearch: onSearch,
-	      onRowDoubleClick: function onRowDoubleClick(data) {
-	        var editStudentWindow = new EditStudentWindow({
-	          data: data,
-	          onSaveSuccess: function onSaveSuccess() {
-	            _this.dataGrid.refresh();
-	          }
-	        });
-	        editStudentWindow.render($('#dialogWindowContainer'));
-	        editStudentWindow.open();
-	      },
-	      dataGridOptions: dataGridOptions
-	    });
-	  }
-
-	  _createClass(Leavelnfo, [{
-	    key: 'render',
-	    value: function render(container) {
-
-	      var addMedicalInfo = new _Button2.default({
-	        title: 'Tambah Surat Cuti',
-	        template: 'primary',
-	        height: 26,
-	        onClick: function onClick() {
-	          // var addStudentWindow = new AddStudentWindow({
-	          //   onSaveSuccess: function(){
-	          //     _this.dataGrid.refresh();
-	          //   }
-	          // });
-	          // addStudentWindow.render($('#dialogWindowContainer'));
-	          // addStudentWindow.open();
-	        }
-	      });
-
-	      var table = $('<table style="height: 100%; width: 100%; margin: -3px; "></table>');
-	      var tr = $('<tr></tr>');
-	      var td = $('<td style="padding: 0; height: 40px;"></td>');
-	      table.appendTo(container);
-	      tr.appendTo(table);
-	      td.appendTo(tr);
-
-	      var innerTable = $('<table style="height: 100%; width: 100%;"></table>');
-	      var innerTr = $('<tr></tr>');
-	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; padding-right: 8px; width: 50px; height: 100%;"></td>');
-	      innerTable.appendTo(td);
-	      innerTr.appendTo(innerTable);
-	      innerTd.appendTo(innerTr);
-	      addMedicalInfo.render(innerTd);
-
-	      tr = $('<tr></tr>');
-	      td = $('<td style="padding: 0;"></td>');
-	      tr.appendTo(table);
-	      td.appendTo(tr);
-
-	      this.dataGrid.render(td);
-	    }
-	  }]);
-
-	  return Leavelnfo;
-	}();
-
-	exports.default = Leavelnfo;
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Utils = __webpack_require__(3);
-
 	var _Button = __webpack_require__(8);
 
 	var _Button2 = _interopRequireDefault(_Button);
@@ -8455,7 +8311,7 @@
 
 	var _AddWindow2 = _interopRequireDefault(_AddWindow);
 
-	var _AddPermissionInfoForm = __webpack_require__(68);
+	var _AddPermissionInfoForm = __webpack_require__(67);
 
 	var _AddPermissionInfoForm2 = _interopRequireDefault(_AddPermissionInfoForm);
 
@@ -8518,7 +8374,7 @@
 	exports.default = AddPermissionInfoWindow;
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8662,7 +8518,7 @@
 	exports.default = AddPermissionInfoForm;
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8683,7 +8539,7 @@
 
 	var _EditWindow2 = _interopRequireDefault(_EditWindow);
 
-	var _EditPermissionInfoForm = __webpack_require__(70);
+	var _EditPermissionInfoForm = __webpack_require__(69);
 
 	var _EditPermissionInfoForm2 = _interopRequireDefault(_EditPermissionInfoForm);
 
@@ -8766,7 +8622,7 @@
 	exports.default = EditPermissionInfoWindow;
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8957,6 +8813,150 @@
 	}();
 
 	exports.default = EditPermissionInfoForm;
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Form = __webpack_require__(16);
+
+	var _Form2 = _interopRequireDefault(_Form);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _NumberInput = __webpack_require__(30);
+
+	var _NumberInput2 = _interopRequireDefault(_NumberInput);
+
+	var _CheckBox = __webpack_require__(53);
+
+	var _CheckBox2 = _interopRequireDefault(_CheckBox);
+
+	var _Label = __webpack_require__(29);
+
+	var _Label2 = _interopRequireDefault(_Label);
+
+	var _DataGrid = __webpack_require__(25);
+
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Leavelnfo = function () {
+	  function Leavelnfo(options) {
+	    _classCallCheck(this, Leavelnfo);
+
+	    this.id = (0, _Utils.guid)();
+
+	    var _this = this;
+
+	    var url = "/students";
+
+	    var source = {
+	      datatype: "json",
+	      datafields: [{ name: 'id', type: 'int' }, { name: 'medical_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'description', type: 'string' }, { name: 'level', type: 'string' }],
+	      id: "id",
+	      url: url
+	    };
+
+	    var dataGridOptions = {
+	      width: '100%',
+	      height: '100%',
+	      pageable: true,
+	      altrows: true,
+	      theme: 'metro',
+	      virtualmode: true,
+	      rendergridrows: function rendergridrows(params) {
+	        return params.data;
+	      },
+	      columns: [{ text: 'Tanggal', datafield: 'medical_date', width: '33.33%' }, { text: 'Keterangan', datafield: 'description', width: '33.33%' }, { text: 'Tingkat', datafield: 'level', width: '33.33%' }],
+	      groups: []
+	    };
+
+	    var onSearch = function onSearch(data) {
+	      // data['searchTxt'] = searchTextBox.getValue();
+	      // data['level'] = levelComboBox.getValue();
+	      return data;
+	    };
+
+	    this.dataGrid = new _DataGrid2.default({
+	      source: source,
+	      onSearch: onSearch,
+	      onRowDoubleClick: function onRowDoubleClick(data) {
+	        var editStudentWindow = new EditStudentWindow({
+	          data: data,
+	          onSaveSuccess: function onSaveSuccess() {
+	            _this.dataGrid.refresh();
+	          }
+	        });
+	        editStudentWindow.render($('#dialogWindowContainer'));
+	        editStudentWindow.open();
+	      },
+	      dataGridOptions: dataGridOptions
+	    });
+	  }
+
+	  _createClass(Leavelnfo, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var addMedicalInfo = new _Button2.default({
+	        title: 'Tambah Surat Cuti',
+	        template: 'primary',
+	        height: 26,
+	        onClick: function onClick() {
+	          // var addStudentWindow = new AddStudentWindow({
+	          //   onSaveSuccess: function(){
+	          //     _this.dataGrid.refresh();
+	          //   }
+	          // });
+	          // addStudentWindow.render($('#dialogWindowContainer'));
+	          // addStudentWindow.open();
+	        }
+	      });
+
+	      var table = $('<table style="height: 100%; width: 100%; margin: -3px; "></table>');
+	      var tr = $('<tr></tr>');
+	      var td = $('<td style="padding: 0; height: 40px;"></td>');
+	      table.appendTo(container);
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      var innerTable = $('<table style="height: 100%; width: 100%;"></table>');
+	      var innerTr = $('<tr></tr>');
+	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; padding-right: 8px; width: 50px; height: 100%;"></td>');
+	      innerTable.appendTo(td);
+	      innerTr.appendTo(innerTable);
+	      innerTd.appendTo(innerTr);
+	      addMedicalInfo.render(innerTd);
+
+	      tr = $('<tr></tr>');
+	      td = $('<td style="padding: 0;"></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      this.dataGrid.render(td);
+	    }
+	  }]);
+
+	  return Leavelnfo;
+	}();
+
+	exports.default = Leavelnfo;
 
 /***/ }
 /******/ ]);
