@@ -73,7 +73,23 @@ exports.add = function(req, res, db) {
     if(err){
       res.status(500).send('Error while doing operation, Ex. non unique stambuk');
     }else{
-      res.json({status: 'INSERT_SUCCESS', lastId: result.insertId});
+
+      var studentId = result.insertId;
+      var riwayatMppd = {
+        siswa_id: studentId,
+        status: '',
+        bagian_bermasalah: ''
+      };
+
+      db.query('INSERT INTO tb_riwayat_mppd SET ?', riwayatMppd, function(err, result){
+        if(err){
+          console.log(err);
+        }else{
+          res.json({status: 'INSERT_SUCCESS', lastId: studentId});
+        }
+
+      });
+      
     }
 
   });
