@@ -8852,6 +8852,14 @@
 
 	var _DataGrid2 = _interopRequireDefault(_DataGrid);
 
+	var _AddLeaveInfoWindow = __webpack_require__(71);
+
+	var _AddLeaveInfoWindow2 = _interopRequireDefault(_AddLeaveInfoWindow);
+
+	var _EditLeaveInfoWindow = __webpack_require__(72);
+
+	var _EditLeaveInfoWindow2 = _interopRequireDefault(_EditLeaveInfoWindow);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -8862,13 +8870,15 @@
 
 	    this.id = (0, _Utils.guid)();
 
+	    this.riwayatMppdId = options.riwayatMppdId;
+
 	    var _this = this;
 
-	    var url = "/students";
+	    var url = "/leaveinfo/" + this.riwayatMppdId;
 
 	    var source = {
 	      datatype: "json",
-	      datafields: [{ name: 'id', type: 'int' }, { name: 'medical_date', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'description', type: 'string' }, { name: 'level', type: 'string' }],
+	      datafields: [{ name: 'id', type: 'int' }, { name: 'tanggal', type: 'date', format: "yyyy-MM-ddTHH:mm:ss-HH:mm" }, { name: 'keterangan', type: 'string' }, { name: 'jumlah_hari', type: 'string' }, { name: 'tingkat', type: 'int' }],
 	      id: "id",
 	      url: url
 	    };
@@ -8876,20 +8886,19 @@
 	    var dataGridOptions = {
 	      width: '100%',
 	      height: '100%',
-	      pageable: true,
+	      pageable: false,
 	      altrows: true,
 	      theme: 'metro',
 	      virtualmode: true,
 	      rendergridrows: function rendergridrows(params) {
 	        return params.data;
 	      },
-	      columns: [{ text: 'Tanggal', datafield: 'medical_date', width: '33.33%' }, { text: 'Keterangan', datafield: 'description', width: '33.33%' }, { text: 'Tingkat', datafield: 'level', width: '33.33%' }],
+	      columns: [{ text: 'Tanggal', datafield: 'tanggal', cellsformat: 'dd-MM-yyyy', width: '20%' }, { text: 'Keterangan', datafield: 'keterangan', width: '40%' }, { text: 'Jumlah Hari', datafield: 'jumlah_hari', cellsalign: 'right', cellsformat: 'd', width: '15%' }, { text: 'Tingkat', datafield: 'tingkat', width: '25%' }],
 	      groups: []
 	    };
 
 	    var onSearch = function onSearch(data) {
-	      // data['searchTxt'] = searchTextBox.getValue();
-	      // data['level'] = levelComboBox.getValue();
+
 	      return data;
 	    };
 
@@ -8897,14 +8906,14 @@
 	      source: source,
 	      onSearch: onSearch,
 	      onRowDoubleClick: function onRowDoubleClick(data) {
-	        var editStudentWindow = new EditStudentWindow({
-	          data: data,
+	        var editLeaveInfoWindow = new _EditLeaveInfoWindow2.default({
+	          leaveInfo: data,
 	          onSaveSuccess: function onSaveSuccess() {
 	            _this.dataGrid.refresh();
 	          }
 	        });
-	        editStudentWindow.render($('#dialogWindowContainer'));
-	        editStudentWindow.open();
+	        editLeaveInfoWindow.render($('#dialogWindowContainer'));
+	        editLeaveInfoWindow.open();
 	      },
 	      dataGridOptions: dataGridOptions
 	    });
@@ -8914,18 +8923,21 @@
 	    key: 'render',
 	    value: function render(container) {
 
-	      var addMedicalInfo = new _Button2.default({
+	      var _this = this;
+
+	      var addLeaveInfo = new _Button2.default({
 	        title: 'Tambah Surat Cuti',
 	        template: 'primary',
 	        height: 26,
 	        onClick: function onClick() {
-	          // var addStudentWindow = new AddStudentWindow({
-	          //   onSaveSuccess: function(){
-	          //     _this.dataGrid.refresh();
-	          //   }
-	          // });
-	          // addStudentWindow.render($('#dialogWindowContainer'));
-	          // addStudentWindow.open();
+	          var addLeaveInfoWindow = new _AddLeaveInfoWindow2.default({
+	            riwayatMppdId: _this.riwayatMppdId,
+	            onSaveSuccess: function onSaveSuccess() {
+	              _this.dataGrid.refresh();
+	            }
+	          });
+	          addLeaveInfoWindow.render($('#dialogWindowContainer'));
+	          addLeaveInfoWindow.open();
 	        }
 	      });
 
@@ -8942,7 +8954,7 @@
 	      innerTable.appendTo(td);
 	      innerTr.appendTo(innerTable);
 	      innerTd.appendTo(innerTr);
-	      addMedicalInfo.render(innerTd);
+	      addLeaveInfo.render(innerTd);
 
 	      tr = $('<tr></tr>');
 	      td = $('<td style="padding: 0;"></td>');
@@ -8957,6 +8969,530 @@
 	}();
 
 	exports.default = Leavelnfo;
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _AddWindow = __webpack_require__(17);
+
+	var _AddWindow2 = _interopRequireDefault(_AddWindow);
+
+	var _AddLeaveInfoForm = __webpack_require__(74);
+
+	var _AddLeaveInfoForm2 = _interopRequireDefault(_AddLeaveInfoForm);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AddLeaveInfoWindow = function () {
+	  function AddLeaveInfoWindow(options) {
+	    _classCallCheck(this, AddLeaveInfoWindow);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    this.onSaveSuccess = options.onSaveSuccess;
+
+	    var addLeaveInfoForm = new _AddLeaveInfoForm2.default({
+	      riwayatMppdId: options.riwayatMppdId,
+	      onSaveSuccess: function onSaveSuccess() {
+	        _this.window.close();
+	        if (_this.onSaveSuccess) {
+	          _this.onSaveSuccess();
+	        }
+	      }
+	    });
+
+	    this.window = new _AddWindow2.default({
+	      width: 390,
+	      height: 300,
+	      title: 'Tambah Surat Cuti',
+	      content: addLeaveInfoForm,
+	      onSave: function onSave() {
+	        addLeaveInfoForm.validate();
+	      },
+	      onCancel: function onCancel() {
+	        _this.window.close();
+	      }
+	    });
+	  }
+
+	  _createClass(AddLeaveInfoWindow, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+	      this.window.render(container);
+	    }
+	  }, {
+	    key: 'open',
+	    value: function open() {
+	      this.window.open();
+	    }
+	  }]);
+
+	  return AddLeaveInfoWindow;
+	}();
+
+	exports.default = AddLeaveInfoWindow;
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _EditWindow = __webpack_require__(38);
+
+	var _EditWindow2 = _interopRequireDefault(_EditWindow);
+
+	var _EditLeaveInfoForm = __webpack_require__(73);
+
+	var _EditLeaveInfoForm2 = _interopRequireDefault(_EditLeaveInfoForm);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var EditLeaveInfoWindow = function () {
+	  function EditLeaveInfoWindow(options) {
+	    _classCallCheck(this, EditLeaveInfoWindow);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    this.onSaveSuccess = options.onSaveSuccess;
+	    this.leaveInfo = options.leaveInfo;
+
+	    var editLeaveInfoForm = new _EditLeaveInfoForm2.default({
+	      leaveInfo: this.leaveInfo,
+	      onSaveSuccess: function onSaveSuccess() {
+	        _this.window.close();
+	        if (_this.onSaveSuccess) {
+	          _this.onSaveSuccess();
+	        }
+	      }
+	    });
+
+	    this.window = new _EditWindow2.default({
+	      width: 390,
+	      height: 430,
+	      title: 'Edit Surat Cuti',
+	      content: editLeaveInfoForm,
+	      onSave: function onSave() {
+	        editLeaveInfoForm.validate();
+	      },
+	      onCancel: function onCancel() {
+	        _this.window.close();
+	      },
+	      onDelete: function onDelete() {
+	        var r = confirm("Proses hapus data akan dilakukan!");
+	        if (r == true) {
+	          $.ajax({
+	            method: "DELETE",
+	            url: "/leaveinfo/" + _this.leaveInfo.id,
+	            data: {}
+	          }).done(function () {
+	            $("#successNotification").jqxNotification("open");
+	            _this.window.close();
+	            if (_this.onSaveSuccess) {
+	              _this.onSaveSuccess();
+	            }
+	          }).fail(function () {
+	            var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	            $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	            $("#errorNotification").jqxNotification("open");
+	          });
+	        }
+	      }
+	    });
+	  }
+
+	  _createClass(EditLeaveInfoWindow, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+	      this.window.render(container);
+	    }
+	  }, {
+	    key: 'open',
+	    value: function open() {
+	      this.window.open();
+	    }
+	  }]);
+
+	  return EditLeaveInfoWindow;
+	}();
+
+	exports.default = EditLeaveInfoWindow;
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _Form = __webpack_require__(16);
+
+	var _Form2 = _interopRequireDefault(_Form);
+
+	var _AddWindow = __webpack_require__(17);
+
+	var _AddWindow2 = _interopRequireDefault(_AddWindow);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	var _DateInput = __webpack_require__(59);
+
+	var _DateInput2 = _interopRequireDefault(_DateInput);
+
+	var _TextArea = __webpack_require__(55);
+
+	var _TextArea2 = _interopRequireDefault(_TextArea);
+
+	var _NumberInput = __webpack_require__(30);
+
+	var _NumberInput2 = _interopRequireDefault(_NumberInput);
+
+	var _FileUpload = __webpack_require__(62);
+
+	var _FileUpload2 = _interopRequireDefault(_FileUpload);
+
+	var _Label = __webpack_require__(29);
+
+	var _Label2 = _interopRequireDefault(_Label);
+
+	var _LevelComboBox = __webpack_require__(14);
+
+	var _LevelComboBox2 = _interopRequireDefault(_LevelComboBox);
+
+	var _ViewImageWindow = __webpack_require__(63);
+
+	var _ViewImageWindow2 = _interopRequireDefault(_ViewImageWindow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var EditLeaveInfoForm = function () {
+	  function EditLeaveInfoForm(options) {
+	    _classCallCheck(this, EditLeaveInfoForm);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    this.leaveInfo = options.leaveInfo;
+	    this.onSaveSuccess = options.onSaveSuccess;
+
+	    var tanggalDateInput = new _DateInput2.default({ value: _this.leaveInfo.tanngal, height: 25, width: '90%' });
+	    var descriptionTextArea = new _TextArea2.default({ value: _this.leaveInfo.keterangan, height: 80, width: '90%', placeHolder: '' });
+	    var jumlahHariNumberInput = new _NumberInput2.default({
+	      value: _this.leaveInfo.jumlah_hari, width: '90%', height: 25,
+	      basicProperties: {
+	        min: 1,
+	        max: 31,
+	        decimalDigits: 0,
+	        digits: 2,
+	        spinButtons: true
+	      }
+	    });
+	    var levelComboBox = new _LevelComboBox2.default({ value: _this.leaveInfo.bagian_id });
+
+	    this.fileUpload = new _FileUpload2.default({
+	      width: 220,
+	      uploadUrl: 'leaveinfo_upload/' + this.leaveInfo.id,
+	      fileInputName: 'theFile'
+	    });
+
+	    var formItems = [{
+	      name: 'tanggal',
+	      label: 'Tanggal',
+	      content: tanggalDateInput
+	    }, {
+	      name: 'keterangan',
+	      label: 'Keterangan',
+	      content: descriptionTextArea
+	    }, {
+	      name: 'jumlah_hari',
+	      label: 'Jumlah Hari',
+	      content: jumlahHariNumberInput
+	    }, {
+	      name: 'tingkat',
+	      label: 'Tingkat',
+	      content: levelComboBox,
+	      validation: {
+	        type: 'COMBOBOX',
+	        rule: 'required'
+	      }
+	    }];
+	    var formOptions = {
+	      items: formItems,
+	      labelColumnWidth: '120px',
+	      onValidationSuccess: function onValidationSuccess(formValue) {
+	        $.ajax({
+	          method: "PUT",
+	          url: "/leaveinfo/" + _this.leaveInfo.id,
+	          data: formValue
+	        }).done(function () {
+	          $("#successNotification").jqxNotification("open");
+
+	          if (_this.onSaveSuccess) {
+	            _this.onSaveSuccess();
+	          }
+	        }).fail(function (jqXHR, textStatus, errorThrown) {
+	          var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	          $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	          $("#errorNotification").jqxNotification("open");
+	        });
+	      }
+	    };
+
+	    this.form = new _Form2.default(formOptions);
+	  }
+
+	  _createClass(EditLeaveInfoForm, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+
+	      var table = $('<table style="height: 70%; width: 100%; "></table>');
+	      var tr = $('<tr></tr>');
+	      var td = $('<td style="padding: 0; height: 40px;"></td>');
+	      table.appendTo(container);
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      this.form.render(td);
+
+	      tr = $('<tr></tr>');
+	      td = $('<td style="padding-left: 125px; height: 30px;"></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+	      this.fileUpload.render(td);
+
+	      var viewImage = new _Button2.default({
+	        title: 'View Image',
+	        template: 'primary',
+	        height: 26,
+	        onClick: function onClick() {
+
+	          var viewImageWindow = new _ViewImageWindow2.default({
+	            url: 'leaveinfo_image/' + _this.leaveInfo.id + "?" + (0, _Utils.guid)()
+	          });
+	          viewImageWindow.render($('#dialogWindowContainer'));
+	          viewImageWindow.open();
+	        }
+	      });
+
+	      tr = $('<tr></tr>');
+	      td = $('<td style="padding-left: 125px; height: 30px;"></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      viewImage.render(td);
+	    }
+	  }, {
+	    key: 'validate',
+	    value: function validate() {
+	      this.form.validate();
+	    }
+	  }]);
+
+	  return EditLeaveInfoForm;
+	}();
+
+	exports.default = EditLeaveInfoForm;
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _Form = __webpack_require__(16);
+
+	var _Form2 = _interopRequireDefault(_Form);
+
+	var _AddWindow = __webpack_require__(17);
+
+	var _AddWindow2 = _interopRequireDefault(_AddWindow);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	var _DateInput = __webpack_require__(59);
+
+	var _DateInput2 = _interopRequireDefault(_DateInput);
+
+	var _TextArea = __webpack_require__(55);
+
+	var _TextArea2 = _interopRequireDefault(_TextArea);
+
+	var _NumberInput = __webpack_require__(30);
+
+	var _NumberInput2 = _interopRequireDefault(_NumberInput);
+
+	var _Label = __webpack_require__(29);
+
+	var _Label2 = _interopRequireDefault(_Label);
+
+	var _LevelComboBox = __webpack_require__(14);
+
+	var _LevelComboBox2 = _interopRequireDefault(_LevelComboBox);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AddLeaveInfoForm = function () {
+	  function AddLeaveInfoForm(options) {
+	    _classCallCheck(this, AddLeaveInfoForm);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    this.riwayatMppdId = options.riwayatMppdId;
+	    this.onSaveSuccess = options.onSaveSuccess;
+
+	    var tanggalDateInput = new _DateInput2.default({ height: 25, width: 220 });
+	    var descriptionTextArea = new _TextArea2.default({ height: 80, width: 220, placeHolder: '' });
+	    var jumlahHariNumberInput = new _NumberInput2.default({
+	      value: 1, width: 220, height: 25,
+	      basicProperties: {
+	        min: 1,
+	        max: 31,
+	        decimalDigits: 0,
+	        digits: 2,
+	        spinButtons: true
+	      }
+	    });
+	    var levelComboBox = new _LevelComboBox2.default({});
+
+	    var formItems = [{
+	      name: 'tanggal',
+	      label: 'Tanggal',
+	      content: tanggalDateInput
+	    }, {
+	      name: 'keterangan',
+	      label: 'Keterangan',
+	      content: descriptionTextArea
+	    }, {
+	      name: 'jumlah_hari',
+	      label: 'Jumlah Hari',
+	      content: jumlahHariNumberInput
+	    }, {
+	      name: 'tingkat',
+	      label: 'Tingkat',
+	      content: levelComboBox,
+	      validation: {
+	        type: 'COMBOBOX',
+	        rule: 'required'
+	      }
+	    }];
+	    var formOptions = {
+	      items: formItems,
+	      labelColumnWidth: '120px',
+	      onValidationSuccess: function onValidationSuccess(formValue) {
+
+	        formValue['riwayat_mppd_id'] = _this.riwayatMppdId;
+	        $.ajax({
+	          method: "POST",
+	          url: "/leaveinfo",
+	          data: formValue
+	        }).done(function () {
+	          $("#successNotification").jqxNotification("open");
+	          if (_this.onSaveSuccess) {
+	            _this.onSaveSuccess();
+	          }
+	        }).fail(function (jqXHR, textStatus, errorThrown) {
+	          var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	          $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	          $("#errorNotification").jqxNotification("open");
+	        });
+	      }
+	    };
+
+	    this.form = new _Form2.default(formOptions);
+	  }
+
+	  _createClass(AddLeaveInfoForm, [{
+	    key: 'validate',
+	    value: function validate() {
+	      this.form.validate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render(container) {
+
+	      this.form.render(container);
+	    }
+	  }]);
+
+	  return AddLeaveInfoForm;
+	}();
+
+	exports.default = AddLeaveInfoForm;
 
 /***/ }
 /******/ ]);

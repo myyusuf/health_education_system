@@ -16,6 +16,7 @@ var studentMppd = require('./handlers/student_mppd.js');
 var medicalInfo = require('./handlers/medical_info.js');
 var problemInfo = require('./handlers/problem_info.js');
 var permissionInfo = require('./handlers/permission_info.js');
+var leaveInfo = require('./handlers/leave_info.js');
 
 module.exports = function(app, passport, db) {
 
@@ -294,6 +295,29 @@ module.exports = function(app, passport, db) {
   });
 
   //--------------
+
+  app.post('/leaveinfo', function(req, res) {
+    leaveInfo.add(req, res, db);
+  });
+  app.get('/leaveinfo/:riwayatMppdId', function(req, res) {
+    leaveInfo.list(req, res, db);
+  });
+
+  app.post('/leaveinfo_upload/:leaveInfoId', function(req, res) {
+    leaveInfo.upload(req, res, db);
+  });
+
+  app.get('/leaveinfo_image/:leaveInfoId', function(req, res) {
+    leaveInfo.viewImage(req, res, db);
+  });
+
+  app.put('/leaveinfo/:leaveInfoId', function(req, res) {
+    leaveInfo.update(req, res, db);
+  });
+
+  app.delete('/leaveinfo/:leaveInfoId', function(req, res) {
+    leaveInfo.delete(req, res, db);
+  });
 };
 
 // route middleware to make sure
