@@ -234,6 +234,10 @@ module.exports = function(app, passport, db) {
     weeklyScheduleData.list(req, res, db);
   });
 
+  app.get('/weeklyschedules/download', function(req, res) {
+    weeklyScheduleData.download(req, res, db);
+  });
+
   app.post('/medicalinfo', function(req, res) {
     medicalInfo.add(req, res, db);
   });

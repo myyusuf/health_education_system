@@ -4067,6 +4067,45 @@
 	        }
 	      });
 
+	      var downloadButton = new _Button2.default({
+	        title: 'Download',
+	        template: 'success',
+	        theme: 'metro',
+	        width: 80,
+	        height: 26,
+	        onClick: function onClick() {
+
+	          var url = '/weeklyschedules/download?';
+	          var startDateStr = new Date(dateRange.getValue().from) + "";
+
+	          var endDateStr = new Date(dateRange.getValue().to) + "";
+	          var startDate = startDateStr.replace(/ /g, "+");
+	          startDate = startDate.replace("00:00:00+GMT+0700", "00%3A00%3A00+GMT%2B0700");
+	          var endDate = endDateStr.replace(/ /g, "+");
+	          endDate = endDate.replace("23:59:59+GMT+0700", "23%3A59%3A59+GMT%2B0700");
+
+	          url += '&searchTxt=' + searchTextBox.getValue() + '&searchDivision=' + divisionComboBox.getValue() + '&searchDate%5Bfrom%5D=' + startDate + '&searchDate%5Bto%5D=' + endDate + '&_=' + Math.random();
+
+	          window.location = url;
+	          // console.log('url : ' + url);
+
+	          // &searchTxt=&searchDivision=&searchDate%5Bfrom%5D=Mon+Aug+01+2016+00%3A00%3A00+GMT%2B0700+(WIB)&searchDate%5Bto%5D=Wed+Aug+31+2016+23%3A59%3A59+GMT%2B0700+(WIB)&_=1489305072724
+	          // &searchTxt=&searchDivision=&searchDate%5Bfrom%5D=Mon+Aug+01+2016+00%3A00%3A00+GMT%2B0700+(WIB)&searchDate%to%5D=Wed+Aug+31+2016+23%3A59%3A59+GMT%2B0700+(WIB)&_=0.4794054648524053
+
+	          // $.ajax({
+	          //   method: "GET",
+	          //   url: url,
+	          //   data: {}
+	          // }).done(function(data) {
+	          //
+	          // }).fail(function(jqXHR, textStatus, errorThrown) {
+	          //   var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	          //   $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	          //   $("#errorNotification").jqxNotification("open");
+	          // });
+	        }
+	      });
+
 	      var table = $('<table style="height: 100%; width: 100%; margin: -3px; "></table>');
 	      var tr = $('<tr></tr>');
 	      var td = $('<td style="padding: 0; height: 40px;"></td>');
@@ -4095,6 +4134,10 @@
 	      _tempContainer.appendTo(innerTd);
 	      innerTd.appendTo(innerTr);
 	      searchButton.render(_tempContainer);
+
+	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
+	      innerTd.appendTo(innerTr);
+	      downloadButton.render(innerTd);
 
 	      tr = $('<tr></tr>');
 	      td = $('<td style="padding: 0;"></td>');
@@ -8856,7 +8899,7 @@
 
 	var _AddLeaveInfoWindow2 = _interopRequireDefault(_AddLeaveInfoWindow);
 
-	var _EditLeaveInfoWindow = __webpack_require__(72);
+	var _EditLeaveInfoWindow = __webpack_require__(73);
 
 	var _EditLeaveInfoWindow2 = _interopRequireDefault(_EditLeaveInfoWindow);
 
@@ -8992,7 +9035,7 @@
 
 	var _AddWindow2 = _interopRequireDefault(_AddWindow);
 
-	var _AddLeaveInfoForm = __webpack_require__(74);
+	var _AddLeaveInfoForm = __webpack_require__(72);
 
 	var _AddLeaveInfoForm2 = _interopRequireDefault(_AddLeaveInfoForm);
 
@@ -9071,11 +9114,155 @@
 
 	var _Button2 = _interopRequireDefault(_Button);
 
+	var _Form = __webpack_require__(16);
+
+	var _Form2 = _interopRequireDefault(_Form);
+
+	var _AddWindow = __webpack_require__(17);
+
+	var _AddWindow2 = _interopRequireDefault(_AddWindow);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	var _DateInput = __webpack_require__(59);
+
+	var _DateInput2 = _interopRequireDefault(_DateInput);
+
+	var _TextArea = __webpack_require__(55);
+
+	var _TextArea2 = _interopRequireDefault(_TextArea);
+
+	var _NumberInput = __webpack_require__(30);
+
+	var _NumberInput2 = _interopRequireDefault(_NumberInput);
+
+	var _Label = __webpack_require__(29);
+
+	var _Label2 = _interopRequireDefault(_Label);
+
+	var _LevelComboBox = __webpack_require__(14);
+
+	var _LevelComboBox2 = _interopRequireDefault(_LevelComboBox);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AddLeaveInfoForm = function () {
+	  function AddLeaveInfoForm(options) {
+	    _classCallCheck(this, AddLeaveInfoForm);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    this.riwayatMppdId = options.riwayatMppdId;
+	    this.onSaveSuccess = options.onSaveSuccess;
+
+	    var tanggalDateInput = new _DateInput2.default({ height: 25, width: 220 });
+	    var descriptionTextArea = new _TextArea2.default({ height: 80, width: 220, placeHolder: '' });
+	    var jumlahHariNumberInput = new _NumberInput2.default({
+	      value: 1, width: 220, height: 25,
+	      basicProperties: {
+	        min: 1,
+	        max: 31,
+	        decimalDigits: 0,
+	        digits: 2,
+	        spinButtons: true
+	      }
+	    });
+	    var levelComboBox = new _LevelComboBox2.default({});
+
+	    var formItems = [{
+	      name: 'tanggal',
+	      label: 'Tanggal',
+	      content: tanggalDateInput
+	    }, {
+	      name: 'keterangan',
+	      label: 'Keterangan',
+	      content: descriptionTextArea
+	    }, {
+	      name: 'jumlah_hari',
+	      label: 'Jumlah Hari',
+	      content: jumlahHariNumberInput
+	    }, {
+	      name: 'tingkat',
+	      label: 'Tingkat',
+	      content: levelComboBox,
+	      validation: {
+	        type: 'COMBOBOX',
+	        rule: 'required'
+	      }
+	    }];
+	    var formOptions = {
+	      items: formItems,
+	      labelColumnWidth: '120px',
+	      onValidationSuccess: function onValidationSuccess(formValue) {
+
+	        formValue['riwayat_mppd_id'] = _this.riwayatMppdId;
+	        $.ajax({
+	          method: "POST",
+	          url: "/leaveinfo",
+	          data: formValue
+	        }).done(function () {
+	          $("#successNotification").jqxNotification("open");
+	          if (_this.onSaveSuccess) {
+	            _this.onSaveSuccess();
+	          }
+	        }).fail(function (jqXHR, textStatus, errorThrown) {
+	          var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	          $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	          $("#errorNotification").jqxNotification("open");
+	        });
+	      }
+	    };
+
+	    this.form = new _Form2.default(formOptions);
+	  }
+
+	  _createClass(AddLeaveInfoForm, [{
+	    key: 'validate',
+	    value: function validate() {
+	      this.form.validate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render(container) {
+
+	      this.form.render(container);
+	    }
+	  }]);
+
+	  return AddLeaveInfoForm;
+	}();
+
+	exports.default = AddLeaveInfoForm;
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
 	var _EditWindow = __webpack_require__(38);
 
 	var _EditWindow2 = _interopRequireDefault(_EditWindow);
 
-	var _EditLeaveInfoForm = __webpack_require__(73);
+	var _EditLeaveInfoForm = __webpack_require__(74);
 
 	var _EditLeaveInfoForm2 = _interopRequireDefault(_EditLeaveInfoForm);
 
@@ -9158,7 +9345,7 @@
 	exports.default = EditLeaveInfoWindow;
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9349,150 +9536,6 @@
 	}();
 
 	exports.default = EditLeaveInfoForm;
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Utils = __webpack_require__(3);
-
-	var _Button = __webpack_require__(8);
-
-	var _Button2 = _interopRequireDefault(_Button);
-
-	var _Form = __webpack_require__(16);
-
-	var _Form2 = _interopRequireDefault(_Form);
-
-	var _AddWindow = __webpack_require__(17);
-
-	var _AddWindow2 = _interopRequireDefault(_AddWindow);
-
-	var _TextBox = __webpack_require__(11);
-
-	var _TextBox2 = _interopRequireDefault(_TextBox);
-
-	var _DateInput = __webpack_require__(59);
-
-	var _DateInput2 = _interopRequireDefault(_DateInput);
-
-	var _TextArea = __webpack_require__(55);
-
-	var _TextArea2 = _interopRequireDefault(_TextArea);
-
-	var _NumberInput = __webpack_require__(30);
-
-	var _NumberInput2 = _interopRequireDefault(_NumberInput);
-
-	var _Label = __webpack_require__(29);
-
-	var _Label2 = _interopRequireDefault(_Label);
-
-	var _LevelComboBox = __webpack_require__(14);
-
-	var _LevelComboBox2 = _interopRequireDefault(_LevelComboBox);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var AddLeaveInfoForm = function () {
-	  function AddLeaveInfoForm(options) {
-	    _classCallCheck(this, AddLeaveInfoForm);
-
-	    var _this = this;
-
-	    this.id = (0, _Utils.guid)();
-
-	    this.riwayatMppdId = options.riwayatMppdId;
-	    this.onSaveSuccess = options.onSaveSuccess;
-
-	    var tanggalDateInput = new _DateInput2.default({ height: 25, width: 220 });
-	    var descriptionTextArea = new _TextArea2.default({ height: 80, width: 220, placeHolder: '' });
-	    var jumlahHariNumberInput = new _NumberInput2.default({
-	      value: 1, width: 220, height: 25,
-	      basicProperties: {
-	        min: 1,
-	        max: 31,
-	        decimalDigits: 0,
-	        digits: 2,
-	        spinButtons: true
-	      }
-	    });
-	    var levelComboBox = new _LevelComboBox2.default({});
-
-	    var formItems = [{
-	      name: 'tanggal',
-	      label: 'Tanggal',
-	      content: tanggalDateInput
-	    }, {
-	      name: 'keterangan',
-	      label: 'Keterangan',
-	      content: descriptionTextArea
-	    }, {
-	      name: 'jumlah_hari',
-	      label: 'Jumlah Hari',
-	      content: jumlahHariNumberInput
-	    }, {
-	      name: 'tingkat',
-	      label: 'Tingkat',
-	      content: levelComboBox,
-	      validation: {
-	        type: 'COMBOBOX',
-	        rule: 'required'
-	      }
-	    }];
-	    var formOptions = {
-	      items: formItems,
-	      labelColumnWidth: '120px',
-	      onValidationSuccess: function onValidationSuccess(formValue) {
-
-	        formValue['riwayat_mppd_id'] = _this.riwayatMppdId;
-	        $.ajax({
-	          method: "POST",
-	          url: "/leaveinfo",
-	          data: formValue
-	        }).done(function () {
-	          $("#successNotification").jqxNotification("open");
-	          if (_this.onSaveSuccess) {
-	            _this.onSaveSuccess();
-	          }
-	        }).fail(function (jqXHR, textStatus, errorThrown) {
-	          var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
-	          $("#errorNotification").html('<div>' + errorMessage + '</div>');
-	          $("#errorNotification").jqxNotification("open");
-	        });
-	      }
-	    };
-
-	    this.form = new _Form2.default(formOptions);
-	  }
-
-	  _createClass(AddLeaveInfoForm, [{
-	    key: 'validate',
-	    value: function validate() {
-	      this.form.validate();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render(container) {
-
-	      this.form.render(container);
-	    }
-	  }]);
-
-	  return AddLeaveInfoForm;
-	}();
-
-	exports.default = AddLeaveInfoForm;
 
 /***/ }
 /******/ ]);
