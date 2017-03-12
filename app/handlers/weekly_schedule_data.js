@@ -166,14 +166,15 @@ exports.download = function(req, res, db) {
       if(err){
         res.status(500).send('Error while doing operation.');
       }else{
-        writeToExcel(req, res, rows);
+        console.log('rows.length : ' + rows.length);
+        writeToExcel(req, res, rows, startDate, endDate);
       }
     }
   );
 
 };
 
-var writeToExcel = function(req, res, rows){
+var writeToExcel = function(req, res, rows, startDate, endDate){
   var file = ceuConstant.WEEKLY_REPORT_DIR + 'weekly_schedule_template.xlsx';
   var fileOut = ceuConstant.WEEKLY_REPORT_DIR + 'weekly_schedule_out.xlsx';
 
@@ -185,6 +186,9 @@ var writeToExcel = function(req, res, rows){
   // const label = worksheet['B3'].v;
   // worksheet['B3'].v = 'hello';
   // console.log('label : ' + label);
+
+  worksheet['B2'] = {v:moment(startDate).format('DD/MM/YYYY')};
+  worksheet['C2'] = {v:moment(endDate).format('DD/MM/YYYY')};
 
   for(var i=0; i<rows.length; i++){
     var row = rows[i];
