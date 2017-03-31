@@ -108,6 +108,10 @@
 
 	var _RiwayatMPPDList2 = _interopRequireDefault(_RiwayatMPPDList);
 
+	var _CompreExamList = __webpack_require__(75);
+
+	var _CompreExamList2 = _interopRequireDefault(_CompreExamList);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var splitter = new _Splitter2.default();
@@ -156,6 +160,20 @@
 	  }, {
 	    id: 'cost_unit',
 	    label: "Cost Unit"
+	  }, {
+	    id: 'nilai',
+	    label: "Nilai",
+	    expanded: true,
+	    items: [{
+	      id: 'nilai_kepanitraan_klinik',
+	      label: "Nilai Kepanitraan Klinik"
+	    }, {
+	      id: 'ujian_komprehensif',
+	      label: "Ujian Komprehensif"
+	    }, {
+	      id: 'ujian_ukmppd',
+	      label: "Ujian UKMPPD"
+	    }]
 	  }]
 	}];
 
@@ -182,6 +200,8 @@
 	        tabs.add(item.id, item.label, hospitalList);
 	      } else if (item.id == 'riwayat_mppd') {
 	        tabs.add(item.id, item.label, riwayatMPPDList);
+	      } else if (item.id == 'ujian_komprehensif') {
+	        tabs.add(item.id, item.label, compreExamList);
 	      }
 	    }
 	  }
@@ -198,6 +218,7 @@
 	var hospitalScheduleView = new _HospitalScheduleView2.default();
 	var clinicScheduleView = new _ClinicScheduleView2.default();
 	var riwayatMPPDList = new _RiwayatMPPDList2.default();
+	var compreExamList = new _CompreExamList2.default();
 
 	var navigationBar = new _NavigationBar2.default([{
 	  title: 'Application',
@@ -9536,6 +9557,290 @@
 	}();
 
 	exports.default = EditLeaveInfoForm;
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _ToggleButton = __webpack_require__(10);
+
+	var _ToggleButton2 = _interopRequireDefault(_ToggleButton);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	var _DataGrid = __webpack_require__(25);
+
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+
+	var _EditCompreExamWindow = __webpack_require__(76);
+
+	var _EditCompreExamWindow2 = _interopRequireDefault(_EditCompreExamWindow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var CompreExamList = function () {
+	  function CompreExamList() {
+	    _classCallCheck(this, CompreExamList);
+
+	    this.id = (0, _Utils.guid)();
+	  }
+
+	  _createClass(CompreExamList, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+
+	      var url = "/compreexams";
+
+	      var source = {
+	        datatype: "json",
+	        datafields: [{ name: 'id', type: 'int' }, { name: 'stambuk_lama', type: 'string' }, { name: 'stambuk_baru', type: 'string' }, { name: 'nama', type: 'string' }, { name: 'pre_kompre', type: 'float' }, { name: 'mid_kompre', type: 'float' }, { name: 'final_kompre', type: 'float' }],
+	        id: "id",
+	        url: url
+	      };
+
+	      var onSearch = function onSearch(data) {
+	        data['searchTxt'] = searchTextBox.getValue();
+	        return data;
+	      };
+
+	      var dataGridOptions = {
+	        width: '100%',
+	        height: '100%',
+	        pageable: true,
+	        groupable: true,
+	        virtualmode: true,
+	        rendergridrows: function rendergridrows(params) {
+	          return params.data;
+	        },
+	        altrows: true,
+	        theme: 'metro',
+	        columns: [{ text: 'Stambuk Lama', datafield: 'stambuk_lama', width: '15%' }, { text: 'Stambuk Baru', datafield: 'stambuk_baru', width: '15%' }, { text: 'Nama', datafield: 'nama', width: '25%' }, { text: 'Pre Kompre', datafield: 'pre_kompre', cellsalign: 'right', cellsformat: 'd2', width: '15%' }, { text: 'Mid Kompre', datafield: 'mid_kompre', cellsalign: 'right', cellsformat: 'd2', width: '15%' }, { text: 'Final Kompre', datafield: 'final_kompre', cellsalign: 'right', cellsformat: 'd2', width: '15%' }],
+	        groups: []
+	      };
+
+	      this.dataGrid = new _DataGrid2.default({
+	        source: source,
+	        onSearch: onSearch,
+	        onRowDoubleClick: function onRowDoubleClick(data) {
+	          var editCompreExamWindow = new _EditCompreExamWindow2.default({
+	            data: data,
+	            onSaveSuccess: function onSaveSuccess() {
+	              _this.dataGrid.refresh();
+	            }
+	          });
+	          editCompreExamWindow.render($('#dialogWindowContainer'));
+	          editCompreExamWindow.open();
+	        },
+	        dataGridOptions: dataGridOptions
+	      });
+
+	      var searchTextBox = new _TextBox2.default({ placeHolder: 'Stambuk atau Nama', width: 250, height: 24 });
+	      var searchButton = new _Button2.default({
+	        imgSrc: '/ceu_assets/images/search.png',
+	        theme: 'metro',
+	        width: 30,
+	        height: 26,
+	        onClick: function onClick() {
+	          _this.dataGrid.refresh();
+	        }
+	      });
+
+	      var table = $('<table style="height: 100%; width: 100%; margin: -3px; "></table>');
+	      var tr = $('<tr></tr>');
+	      var td = $('<td style="padding: 0; height: 40px;"></td>');
+	      table.appendTo(container);
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      var innerTable = $('<table style="height: 100%; width: 100%;"></table>');
+	      var innerTr = $('<tr></tr>');
+	      var innerTd = $('<td style="padding-top: 6px; padding-left: 10px; width: 120px; height: 100%;"></td>');
+	      innerTable.appendTo(td);
+	      innerTr.appendTo(innerTable);
+	      innerTd.appendTo(innerTr);
+	      searchTextBox.render(innerTd);
+
+	      innerTd = $('<td style="padding-top: 6px; height: 100%;"></td>');
+	      var _tempContainer = $('<div style="margin-left: -5px;"></div>');
+	      _tempContainer.appendTo(innerTd);
+	      innerTd.appendTo(innerTr);
+	      searchButton.render(_tempContainer);
+
+	      tr = $('<tr></tr>');
+	      td = $('<td style="padding: 0;"></td>');
+	      tr.appendTo(table);
+	      td.appendTo(tr);
+
+	      this.dataGrid.render(td);
+	    }
+	  }]);
+
+	  return CompreExamList;
+	}();
+
+	exports.default = CompreExamList;
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(3);
+
+	var _Button = __webpack_require__(8);
+
+	var _Button2 = _interopRequireDefault(_Button);
+
+	var _Form = __webpack_require__(16);
+
+	var _Form2 = _interopRequireDefault(_Form);
+
+	var _Window = __webpack_require__(28);
+
+	var _Window2 = _interopRequireDefault(_Window);
+
+	var _DateRange = __webpack_require__(18);
+
+	var _DateRange2 = _interopRequireDefault(_DateRange);
+
+	var _Label = __webpack_require__(29);
+
+	var _Label2 = _interopRequireDefault(_Label);
+
+	var _NumberInput = __webpack_require__(30);
+
+	var _NumberInput2 = _interopRequireDefault(_NumberInput);
+
+	var _TextBox = __webpack_require__(11);
+
+	var _TextBox2 = _interopRequireDefault(_TextBox);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var EditCompreExamWindow = function () {
+	  function EditCompreExamWindow(options) {
+	    _classCallCheck(this, EditCompreExamWindow);
+
+	    var _this = this;
+
+	    this.id = (0, _Utils.guid)();
+
+	    var compreExam = options.data;
+	    this.onSaveSuccess = options.onSaveSuccess;
+
+	    var nameStr = compreExam.nama + ' [ ' + compreExam.stambuk_lama + ' - ' + compreExam.stambuk_baru + ' ]';
+
+	    var nameLabel = new _Label2.default({
+	      text: nameStr,
+	      bold: true
+	    });
+
+	    var preKompreNumberInput = new _NumberInput2.default({ value: compreExam.pre_kompre, width: '100%', height: 25 });
+	    var midKompreNumberInput = new _NumberInput2.default({ value: compreExam.mid_kompre, width: '100%', height: 25 });
+	    var finalKompreNumberInput = new _NumberInput2.default({ value: compreExam.final_kompre, width: '100%', height: 25 });
+
+	    var formItems = [{
+	      name: 'studentName',
+	      label: 'Nama',
+	      content: nameLabel
+	    }, {
+	      name: 'pre_kompre',
+	      label: 'Pre Kompre',
+	      content: preKompreNumberInput
+	    }, {
+	      name: 'mid_kompre',
+	      label: 'Mid Kompre',
+	      content: midKompreNumberInput
+	    }, {
+	      name: 'final_kompre',
+	      label: 'Final Kompre',
+	      content: finalKompreNumberInput
+	    }];
+	    var formOptions = {
+	      items: formItems,
+	      labelColumnWidth: '120px',
+	      onValidationSuccess: function onValidationSuccess(formValue) {
+	        $.ajax({
+	          method: "PUT",
+	          url: "/compreexams/" + compreExam.id,
+	          data: formValue
+	        }).done(function () {
+	          $("#successNotification").jqxNotification("open");
+	          _this.window.close();
+	          if (_this.onSaveSuccess) {
+	            _this.onSaveSuccess();
+	          }
+	        }).fail(function (jqXHR, textStatus, errorThrown) {
+	          var errorMessage = 'Proses gagal. Status : ' + jqXHR.status + ' [' + jqXHR.statusText + '] : ' + jqXHR.responseText;
+	          $("#errorNotification").html('<div>' + errorMessage + '</div>');
+	          $("#errorNotification").jqxNotification("open");
+	        });
+	      }
+	    };
+
+	    var form = new _Form2.default(formOptions);
+
+	    this.window = new _Window2.default({
+	      width: 430,
+	      height: 250,
+	      title: 'Edit Ujian Komprehensif',
+	      content: form,
+	      onSave: function onSave() {
+	        form.validate();
+	      },
+	      onCancel: function onCancel() {
+	        _this.window.close();
+	      }
+	    });
+	  }
+
+	  _createClass(EditCompreExamWindow, [{
+	    key: 'render',
+	    value: function render(container) {
+
+	      var _this = this;
+	      this.window.render(container);
+	    }
+	  }, {
+	    key: 'open',
+	    value: function open() {
+	      this.window.open();
+	    }
+	  }]);
+
+	  return EditCompreExamWindow;
+	}();
+
+	exports.default = EditCompreExamWindow;
 
 /***/ }
 /******/ ]);

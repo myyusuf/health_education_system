@@ -17,6 +17,7 @@ var medicalInfo = require('./handlers/medical_info.js');
 var problemInfo = require('./handlers/problem_info.js');
 var permissionInfo = require('./handlers/permission_info.js');
 var leaveInfo = require('./handlers/leave_info.js');
+var compreExamData = require('./handlers/compre_exam_data.js');
 
 module.exports = function(app, passport, db) {
 
@@ -321,6 +322,13 @@ module.exports = function(app, passport, db) {
 
   app.delete('/leaveinfo/:leaveInfoId', function(req, res) {
     leaveInfo.delete(req, res, db);
+  });
+
+  app.get('/compreexams', isLoggedIn, function(req, res) {
+    compreExamData.list(req, res, db);
+  });
+  app.put('/compreexams/:id', isLoggedIn, function(req, res) {
+    compreExamData.update(req, res, db);
   });
 };
 

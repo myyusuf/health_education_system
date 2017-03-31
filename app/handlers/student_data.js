@@ -84,14 +84,23 @@ exports.add = function(req, res, db) {
       db.query('INSERT INTO tb_riwayat_mppd SET ?', riwayatMppd, function(err, result){
         if(err){
           console.log(err);
+          res.status(500).send('Error while doing operation.');
         }else{
-          res.json({status: 'INSERT_SUCCESS', lastId: studentId});
+          var tbUjianKompre = {
+            siswa_id: studentId
+          };
+
+          db.query('INSERT INTO tb_ujian_kompre SET ?', tbUjianKompre, function(err, result){
+            if(err){
+              console.log(err);
+            }else{
+              res.json({status: 'INSERT_SUCCESS'});
+            }
+
+          });
         }
-
       });
-      
     }
-
   });
 };
 
