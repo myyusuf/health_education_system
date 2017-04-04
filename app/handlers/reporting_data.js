@@ -8,7 +8,7 @@ exports.costUnit = function(req, res, db) {
     "LEFT JOIN tb_bagian on tb_nilai.bagian_id = tb_bagian.id " +
     "LEFT JOIN tb_jadwal on (tb_nilai.id = tb_jadwal.nilai_id AND tb_jadwal.tipe_jadwal = 'BA') " +
     "WHERE rs_id = ? AND " +
-    "tb_jadwal.start_date >= ? AND tb_jadwal.end_date <= ? " +
+    "tb_jadwal.start_date >= ? AND tb_jadwal.start_date <= ? " +
     "LIMIT ?,? ";
   var pagesize = parseInt(req.param('pagesize'));
   var pagenum = parseInt(req.param('pagenum'));
@@ -69,7 +69,7 @@ exports.costUnit = function(req, res, db) {
         "LEFT JOIN tb_bagian on tb_nilai.bagian_id = tb_bagian.id " +
         "LEFT JOIN tb_jadwal on (tb_nilai.id = tb_jadwal.nilai_id AND tb_jadwal.tipe_jadwal = 'BA') " +
         "WHERE rs_id = ? AND " +
-        "tb_jadwal.start_date >= ? AND tb_jadwal.end_date <= ? ";
+        "tb_jadwal.start_date >= ? AND tb_jadwal.start_date <= ? ";
 
         db.query(
           query, [hospitalInt, startDate, endDate],

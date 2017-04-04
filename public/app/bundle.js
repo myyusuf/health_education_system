@@ -5331,8 +5331,8 @@
 	    var form = new _Form2.default(formOptions);
 
 	    this.window = new _EditWindow2.default({
-	      width: 390,
-	      height: 250,
+	      width: 490,
+	      height: 450,
 	      title: 'Edit Siswa',
 	      content: form,
 	      onSave: function onSave() {
